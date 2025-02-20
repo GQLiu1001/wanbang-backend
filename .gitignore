@@ -1,0 +1,90 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Package files
+*.jar
+*.war
+
+# IDE-specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# IntelliJ IDEA
+*.iws
+*.ipr
+*.iml
+.idea/
+
+# NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+*.nb-gradle/
+
+# Gradle
+.gradle/
+build/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
+
+# Application logs
+logs/
+log/
+
+# Database files
+*.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Virtual environment files
+venv/
+env/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Sensitive files
+application.properties
+application.yml
+*.properties
+*.yml
+
+# Test results
+*/test-results/
+
+# Docker
+Dockerfile
+docker-compose.yml
+*.dockerignore
+
+# Ignore MinIO configuration (if any)
+minio/
+
+# Ignore Redis configuration (if any)
+redis.conf
+
+# Ignore generated Swagger/OpenAPI files (if any)
+swagger-ui/
+v3/api-docs/
+
+# Ignore database migration files
