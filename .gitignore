@@ -63,11 +63,7 @@ env/
 .DS_Store
 Thumbs.db
 
-# Sensitive files
-application.properties
-application.yml
-*.properties
-*.yml
+
 
 # Test results
 */test-results/
