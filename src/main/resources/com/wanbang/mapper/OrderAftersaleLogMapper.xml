@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanbang.mapper.OrderAftersaleLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.wanbang.common.OrderAftersaleLog">
+            <id property="id" column="id" />
+            <result property="orderNo" column="order_no" />
+            <result property="aftersaleType" column="aftersale_type" />
+            <result property="aftersaleStatus" column="aftersale_status" />
+            <result property="quantityChange" column="quantity_change" />
+            <result property="amountChange" column="amount_change" />
+            <result property="resolutionResult" column="resolution_result" />
+            <result property="aftersaleOperator" column="aftersale_operator" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,order_no,aftersale_type,aftersale_status,quantity_change,amount_change,
+        resolution_result,aftersale_operator
+    </sql>
+</mapper>

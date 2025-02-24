@@ -1,0 +1,10 @@
+package com.wanbang.req;
+
+import lombok.Data;
+//用户注册req
+@Data
+public class LoginRegisterReq {
+    private String username;
+    private String password;
+    private String phone;
+}

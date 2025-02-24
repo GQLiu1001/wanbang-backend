@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanbang.mapper.OrderInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.wanbang.common.OrderInfo">
+            <id property="id" column="id" />
+            <result property="orderNo" column="order_no" />
+            <result property="itemId" column="item_id" />
+            <result property="quantity" column="quantity" />
+            <result property="adjustedQuantity" column="adjusted_quantity" />
+            <result property="totalAmount" column="total_amount" />
+            <result property="adjustedAmount" column="adjusted_amount" />
+            <result property="customerPhone" column="customer_phone" />
+            <result property="operatorId" column="operator_id" />
+            <result property="orderRemark" column="order_remark" />
+            <result property="aftersaleType" column="aftersale_type" />
+            <result property="aftersaleStatus" column="aftersale_status" />
+            <result property="resolutionResult" column="resolution_result" />
+            <result property="aftersaleOperator" column="aftersale_operator" />
+            <result property="orderCreateTime" column="order_create_time" />
+            <result property="orderUpdateTime" column="order_update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,order_no,item_id,quantity,adjusted_quantity,total_amount,
+        adjusted_amount,customer_phone,operator_id,order_remark,aftersale_type,
+        aftersale_status,resolution_result,aftersale_operator,order_create_time,order_update_time
+    </sql>
+</mapper>
