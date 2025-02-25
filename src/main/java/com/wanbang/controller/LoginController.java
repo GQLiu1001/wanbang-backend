@@ -59,4 +59,13 @@ public class LoginController {
             return Result.fail();
         }
     }
+
+    @Operation(summary = "用户登出")
+    @PostMapping("/logout")
+    public Result logout(@RequestHeader("satoken") String token) {
+        System.out.println(token);
+        StpUtil.logout();
+        return Result.success();
+    }
+
 }

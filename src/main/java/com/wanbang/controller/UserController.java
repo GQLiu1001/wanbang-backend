@@ -2,7 +2,11 @@ package com.wanbang.controller;
 
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wanbang.common.Result;
+import com.wanbang.common.UserInfoVO;
+import com.wanbang.resp.UserListResp;
 import com.wanbang.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,5 +34,19 @@ public class UserController {
             return Result.success();
         }
         return Result.fail();
+    }
+
+    @Operation(summary = "获取用户列表")
+    @GetMapping
+    public Result<UserListResp> getUsers(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size ) {
+        IPage<UserInfoVO> result  = sysUserService.getUserList(page,size);
+        // 构造响应对象
+        UserListResp resp = new UserListResp();
+        resp.setItems(result.getRecords());         // 当前页数据列表
+        resp.setTotal( result.getTotal());          // 总记录数
+        resp.setPage(result.getCurrent());         // 当前页码
+        resp.setSize(result.getSize());           // 每页大小
+        return Result.success(resp);
+
     }
 }

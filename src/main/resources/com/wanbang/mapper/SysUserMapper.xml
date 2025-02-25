@@ -31,4 +31,17 @@
         where username = #{username}
             and password = #{password}
     </select>
+    <select id="selectUserListWithRole" resultType="com.wanbang.common.UserInfoVO">
+        SELECT
+            user.id,
+            user.username,
+            user.phone,
+            role.role_key,
+            role.description
+        FROM sys_user user
+                 LEFT JOIN sys_user_role user_role ON user.id = user_role.user_id
+                 LEFT JOIN sys_role role ON user_role.role_id = role.id
+    </select>
+
+
 </mapper>

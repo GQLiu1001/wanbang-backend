@@ -77,6 +77,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-pool2</artifactId>
 		</dependency>
+		<!-- jdk 11+ 引入可选模块 -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-jsqlparser</artifactId>
+			<version>3.5.9</version> <!-- 确保版本和 MyBatis Plus 主包一致 -->
+		</dependency>
 
 	</dependencies>
 

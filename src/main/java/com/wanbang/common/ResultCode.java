@@ -4,11 +4,7 @@ public enum ResultCode {
 
     SUCCESS(200, "成功"),
     FAIL(400, "失败"),
-    UNAUTHORIZED(401, "未授权"),
-    FORBIDDEN(403, "禁止访问"),
-    NOT_FOUND(404, "资源不存在"),
-    SERVER_ERROR(500, "服务器内部错误"),
-    VALIDATION_ERROR(422, "参数验证失败");
+    UNAUTHORIZED(401, "未授权");
 
     private final int code;
     private final String message;

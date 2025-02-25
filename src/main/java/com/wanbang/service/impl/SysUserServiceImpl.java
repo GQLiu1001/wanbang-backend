@@ -1,12 +1,11 @@
 package com.wanbang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.WanbangBackendApplication;
-import com.wanbang.common.LoginDTO;
-import com.wanbang.common.SysRole;
-import com.wanbang.common.SysUser;
-import com.wanbang.common.SysUserRole;
+import com.wanbang.common.*;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.mapper.SysRoleMapper;
 import com.wanbang.mapper.SysUserRoleMapper;
@@ -18,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
 * @author 11965
@@ -82,11 +82,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         queryWrapper.eq(SysUser::getPhone,phone);
         SysUser sysUser = sysUserMapper.selectOne(queryWrapper);
         if (sysUser == null) {
-            throw new WanbangException(400,"请求错误");
+            throw new WanbangException(ResultCode.FAIL);
+        }
+        if (password.equals(sysUser.getPassword())) {
+            throw new WanbangException(400,"不能与原密码相同");
         }
         sysUser.setPassword(password);
         int i = sysUserMapper.updateById(sysUser);
         return i;
+    }
+
+    @Override
+    public IPage<UserInfoVO> getUserList(int page, int size) {
+        IPage<UserInfoVO> pageParam = new Page<>(page, size);
+        IPage<UserInfoVO> result = sysUserMapper.selectUserListWithRole(pageParam);
+        System.out.println(result);
+        return result;
     }
 
 
