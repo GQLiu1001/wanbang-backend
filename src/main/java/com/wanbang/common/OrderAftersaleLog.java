@@ -1,6 +1,9 @@
 package com.wanbang.common;
 
 import java.math.BigDecimal;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -12,6 +15,7 @@ public class OrderAftersaleLog {
     /**
      * 唯一标识
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
