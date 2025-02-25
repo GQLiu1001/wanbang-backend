@@ -25,3 +25,4 @@ mybatis-plus:
       id-type: AUTO
 springdoc:
   packages-to-scan: com.wanbang.controller
+
