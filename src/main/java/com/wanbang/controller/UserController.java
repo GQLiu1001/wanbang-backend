@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wanbang.common.Result;
 import com.wanbang.common.UserInfoVO;
+import com.wanbang.req.UserInfoChangeReq;
 import com.wanbang.resp.UserListResp;
 import com.wanbang.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,6 +48,15 @@ public class UserController {
         resp.setPage(result.getCurrent());         // 当前页码
         resp.setSize(result.getSize());           // 每页大小
         return Result.success(resp);
+    }
 
+    @Operation(summary = "修改用户信息")
+    @PutMapping("/{id}")
+    public Result updateUser(@PathVariable Long id, @RequestBody UserInfoChangeReq userInfoChangeReq) {
+        Integer i = sysUserService.updateUser(id,userInfoChangeReq);
+        if (i > 0) {
+            return Result.success();
+        }
+        return Result.fail();
     }
 }

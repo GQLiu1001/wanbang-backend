@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wanbang.common.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanbang.common.UserInfoVO;
+import com.wanbang.req.UserInfoChangeReq;
 import com.wanbang.resp.LoginResp;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface SysUserService extends IService<SysUser> {
     Integer changePassword(String username, String phone, String password);
 
     IPage<UserInfoVO> getUserList(int page, int size);
+
+    Integer updateUser(Long id, UserInfoChangeReq userInfoChangeReq);
 }

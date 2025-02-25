@@ -9,6 +9,7 @@ import com.wanbang.common.*;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.mapper.SysRoleMapper;
 import com.wanbang.mapper.SysUserRoleMapper;
+import com.wanbang.req.UserInfoChangeReq;
 import com.wanbang.resp.LoginResp;
 import com.wanbang.service.SysUserService;
 import com.wanbang.mapper.SysUserMapper;
@@ -98,6 +99,24 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         IPage<UserInfoVO> result = sysUserMapper.selectUserListWithRole(pageParam);
         System.out.println(result);
         return result;
+    }
+
+    @Override
+    public Integer updateUser(Long id, UserInfoChangeReq userInfoChangeReq) {
+        SysUser sysUser = sysUserMapper.selectById(id);
+        System.out.println("sysUser"+sysUser);
+        System.out.println("userInfoChangeReq"+userInfoChangeReq);
+        if (!sysUser.getPassword().equals(userInfoChangeReq.getOldPassword())) {
+            throw new WanbangException(ResultCode.FAIL);
+        }
+        SysUser newSysUser = new SysUser();
+        newSysUser.setId(id);
+        newSysUser.setUsername(userInfoChangeReq.getUsername());
+        newSysUser.setPhone(userInfoChangeReq.getPhone());
+        newSysUser.setPassword(userInfoChangeReq.getPassword());
+        newSysUser.setUpdateTime(new Date());
+        int i = sysUserMapper.updateById(newSysUser);
+        return i;
     }
 
 
