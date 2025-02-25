@@ -2,6 +2,7 @@ package com.wanbang.service;
 
 import com.wanbang.common.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.resp.LoginResp;
 
 /**
 * @author 11965
@@ -10,4 +11,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface SysUserService extends IService<SysUser> {
 
+    LoginResp login(String username, String password);
+
+    Integer deleteUser(Long id);
+
+    Integer registry(String username, String password, String phone);
 }

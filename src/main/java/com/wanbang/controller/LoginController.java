@@ -1,7 +1,49 @@
 package com.wanbang.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import cn.dev33.satoken.stp.StpUtil;
+import com.wanbang.common.Result;
+import com.wanbang.req.LoginReq;
+import com.wanbang.req.RegisterReq;
+import com.wanbang.resp.LoginResp;
+import com.wanbang.service.SysUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "认证接口", description = "用户登录相关接口")
+@RequestMapping("/api/auth")
 @RestController
+@CrossOrigin
 public class LoginController {
+    @Resource
+    private SysUserService sysUserService;
+
+    @Operation(summary = "用户登录", description = "根据用户名和密码进行登录认证")
+    @PostMapping("/login")
+    public Result<LoginResp> login(@RequestBody LoginReq loginReq) {
+        String username = loginReq.getUsername();
+        String password = loginReq.getPassword();
+        LoginResp loginResp = sysUserService.login(username, password);
+        if (loginResp == null) {
+            return Result.fail();
+        }
+        StpUtil.login(loginResp.getId());
+        return Result.success(loginResp);
+    }
+
+    @Operation(summary = "用户注册")
+    @PostMapping("/register")
+    public Result register(@RequestBody RegisterReq registerReq) {
+        String username = registerReq.getUsername();
+        String password = registerReq.getPassword();
+        String phone = registerReq.getPhone();
+        Integer i = sysUserService.registry(username,password,phone);
+        if (i > 0) {
+            return Result.success();
+        }
+        return Result.fail("注册失败");
+    }
+
+
 }

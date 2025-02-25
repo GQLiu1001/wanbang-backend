@@ -1,6 +1,9 @@
 package com.wanbang.common;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -12,7 +15,7 @@ public class SysUser {
     /**
      * 用户ID
      */
-
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

@@ -1,7 +1,9 @@
 package com.wanbang.mapper;
 
+import com.wanbang.common.LoginDTO;
 import com.wanbang.common.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanbang.resp.LoginResp;
 
 /**
 * @author 11965
@@ -11,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
+    LoginDTO login(String username, String password);
 }
 
 
