@@ -16,4 +16,6 @@ public interface SysUserService extends IService<SysUser> {
     Integer deleteUser(Long id);
 
     Integer registry(String username, String password, String phone);
+
+    Integer changePassword(String username, String phone, String password);
 }

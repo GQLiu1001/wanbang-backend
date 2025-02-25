@@ -4,6 +4,13 @@ spring:
     password: 123123
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/wanbang_db?useSSL=false&serverTimezone=UTC
+  data:
+    redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+      timeout: 10s
+      password: 123123
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # token 名称（同时也是 cookie 名称）
@@ -24,3 +31,5 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: AUTO
+springdoc:
+  packages-to-scan: com.wanbang.controller

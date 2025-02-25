@@ -2,10 +2,13 @@ package com.wanbang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanbang.WanbangBackendApplication;
 import com.wanbang.common.LoginDTO;
 import com.wanbang.common.SysRole;
 import com.wanbang.common.SysUser;
 import com.wanbang.common.SysUserRole;
+import com.wanbang.exception.WanbangException;
+import com.wanbang.mapper.SysRoleMapper;
 import com.wanbang.mapper.SysUserRoleMapper;
 import com.wanbang.resp.LoginResp;
 import com.wanbang.service.SysUserService;
@@ -28,6 +31,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
     private SysUserMapper sysUserMapper;
     @Resource
     private SysUserRoleMapper sysUserRoleMapper;
+    @Resource
+    private SysRoleMapper sysRoleMapper;
 
     @Override
     public LoginResp login(String username, String password) {
@@ -36,7 +41,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         System.out.println("从数据库查出的loginDTO"+loginDTO);
         LoginResp loginResp = new LoginResp();
         BeanUtils.copyProperties(loginDTO,loginResp);
-        loginResp.setRoleKey(roleId == 1 ? "admin":"employee");
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysRole::getId, roleId);
+        SysRole sysRole = sysRoleMapper.selectOne(queryWrapper);
+        loginResp.setRoleKey(sysRole.getRoleKey());
         System.out.println("返回给前端的loginResp"+loginResp);
         return loginResp;
     }
@@ -65,6 +73,20 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         sysUserRole.setRoleId(2L);
         int j = sysUserRoleMapper.insert(sysUserRole);
         return i + j;
+    }
+
+    @Override
+    public Integer changePassword(String username, String phone, String password) {
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUser::getUsername, username);
+        queryWrapper.eq(SysUser::getPhone,phone);
+        SysUser sysUser = sysUserMapper.selectOne(queryWrapper);
+        if (sysUser == null) {
+            throw new WanbangException(400,"请求错误");
+        }
+        sysUser.setPassword(password);
+        int i = sysUserMapper.updateById(sysUser);
+        return i;
     }
 
 

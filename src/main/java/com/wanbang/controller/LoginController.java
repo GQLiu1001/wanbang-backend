@@ -2,6 +2,7 @@ package com.wanbang.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.wanbang.common.Result;
+import com.wanbang.req.ForgetPasswordReq;
 import com.wanbang.req.LoginReq;
 import com.wanbang.req.RegisterReq;
 import com.wanbang.resp.LoginResp;
@@ -45,5 +46,17 @@ public class LoginController {
         return Result.fail("注册失败");
     }
 
-
+    @Operation(summary = "用户忘记密码")
+    @PostMapping("/reset-password")
+    public Result resetPassword(@RequestBody ForgetPasswordReq forgetPasswordReq) {
+        String username = forgetPasswordReq.getUsername();
+        String phone = forgetPasswordReq.getPhone();
+        String password = forgetPasswordReq.getNewPassword();
+        Integer i = sysUserService.changePassword(username,phone,password);
+        if (i > 0) {
+            return Result.success();
+        }else {
+            return Result.fail();
+        }
+    }
 }

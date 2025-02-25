@@ -1,6 +1,12 @@
 package com.wanbang.config;
 
 import cn.dev33.satoken.stp.StpInterface;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.wanbang.common.SysRole;
+import com.wanbang.common.SysUserRole;
+import com.wanbang.mapper.SysRoleMapper;
+import com.wanbang.mapper.SysUserRoleMapper;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,6 +14,10 @@ import java.util.List;
 
 @Component
 public class StpInterfaceImpl  implements StpInterface {
+    @Resource
+    private SysUserRoleMapper sysUserRoleMapper;
+    @Resource
+    private SysRoleMapper sysRoleMapper;
     /**
      * 返回一个账号所拥有的权限码集合
      */
@@ -24,8 +34,14 @@ public class StpInterfaceImpl  implements StpInterface {
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         List<String> list = new ArrayList<String>();
-        list.add("admin");
-        list.add("employee");
+        LambdaQueryWrapper<SysUserRole> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysUserRole::getUserId, loginId);
+        SysUserRole sysUserRole = sysUserRoleMapper.selectOne(wrapper);
+        Long roleId = sysUserRole.getRoleId();
+        LambdaQueryWrapper<SysRole> wrapper1 = new LambdaQueryWrapper<>();
+        wrapper1.eq(SysRole::getId, roleId);
+        SysRole sysRole = sysRoleMapper.selectOne(wrapper1);
+        list.add(sysRole.getRoleName());
         return list;
     }
 }
