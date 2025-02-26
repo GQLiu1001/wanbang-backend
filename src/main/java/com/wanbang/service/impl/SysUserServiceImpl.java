@@ -106,9 +106,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         SysUser sysUser = sysUserMapper.selectById(id);
         System.out.println("sysUser"+sysUser);
         System.out.println("userInfoChangeReq"+userInfoChangeReq);
-        if (!sysUser.getPassword().equals(userInfoChangeReq.getOldPassword())) {
-            throw new WanbangException(ResultCode.FAIL);
-        }
         SysUser newSysUser = new SysUser();
         newSysUser.setId(id);
         newSysUser.setUsername(userInfoChangeReq.getUsername());

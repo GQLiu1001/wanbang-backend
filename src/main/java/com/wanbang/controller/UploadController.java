@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.wanbang.util.MinioUpload.uploadFile;
 
@@ -23,7 +25,9 @@ public class UploadController {
     public Result upload(@RequestParam("file") MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         String url = uploadFile(file);
         if (url != null) {
-            return Result.success(url);
+            Map<String, String> data = new HashMap<>();
+            data.put("fileUrl", url);
+            return Result.success(data);  // 确保返回的是 {code:200, message:"成功", data:{fileUrl:"http://..."}}
         }
         else {
             return Result.fail();

@@ -39,8 +39,13 @@ public class MinioUpload {
                         .object(fileName)
                         .stream(inputStream, file.getSize(), -1)
                         .build());
-
-        return ENDPOINT + "/" + BUCKET_NAME + "/" + fileName;
-
+        // URL有效期1小时
+        return minioClient.getPresignedObjectUrl(
+                GetPresignedObjectUrlArgs.builder()
+                        .method(Method.GET)
+                        .bucket(BUCKET_NAME)
+                        .object(fileName)
+                        .expiry(7, TimeUnit.DAYS) // URL有效期1小时
+                        .build());
     }
 }
