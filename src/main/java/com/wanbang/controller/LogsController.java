@@ -3,5 +3,5 @@ package com.wanbang.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class LogsController {
+public class  LogsController {
 }

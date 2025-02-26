@@ -1,10 +1,16 @@
 package com.wanbang.resp;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-//卖得最火的商品
+
 @Data
 public class TopSoldItemsResp {
-    private String model_number;//产品型号
-    private Integer salesAmount;//卖出的数量
+    @JsonProperty("model_number")
+    private String modelNumber;  // 产品型号
+    //adjusted_quantity 和 total_quantity 在创建的时候一起创建 后续修改adjusted_quantity
+    @JsonProperty("sales")
+    private Integer adjustedQuantity; // 卖出的数量
+
+
 
 }
