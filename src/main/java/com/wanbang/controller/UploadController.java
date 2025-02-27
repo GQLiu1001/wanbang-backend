@@ -2,14 +2,13 @@ package com.wanbang.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.wanbang.common.Result;
-import com.wanbang.common.ResultCode;
+import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.service.SysUserService;
 import io.minio.errors.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;

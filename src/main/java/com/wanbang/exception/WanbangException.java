@@ -1,6 +1,6 @@
 package com.wanbang.exception;
 
-import com.wanbang.common.ResultCode;
+import com.wanbang.enums.ResultCode;
 
 public class WanbangException extends RuntimeException {
     private  Integer code;  // 错误码

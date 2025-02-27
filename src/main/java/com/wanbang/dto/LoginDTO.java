@@ -1,4 +1,4 @@
-package com.wanbang.common;
+package com.wanbang.dto;
 
 import lombok.Data;
 

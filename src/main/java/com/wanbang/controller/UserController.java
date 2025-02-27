@@ -1,18 +1,15 @@
 package com.wanbang.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wanbang.common.Result;
-import com.wanbang.common.UserInfoVO;
+import com.wanbang.vo.UserInfoVO;
 import com.wanbang.req.UserInfoChangeReq;
 import com.wanbang.resp.UserListResp;
 import com.wanbang.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

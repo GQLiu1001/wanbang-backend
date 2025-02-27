@@ -1,6 +1,6 @@
 package com.wanbang.resp;
 
-import com.wanbang.common.UserInfoVO;
+import com.wanbang.vo.UserInfoVO;
 import lombok.Data;
 
 import java.util.List;

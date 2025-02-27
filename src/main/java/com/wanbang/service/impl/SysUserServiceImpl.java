@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wanbang.WanbangBackendApplication;
 import com.wanbang.common.*;
+import com.wanbang.dto.LoginDTO;
+import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.mapper.SysRoleMapper;
 import com.wanbang.mapper.SysUserRoleMapper;
@@ -13,12 +14,12 @@ import com.wanbang.req.UserInfoChangeReq;
 import com.wanbang.resp.LoginResp;
 import com.wanbang.service.SysUserService;
 import com.wanbang.mapper.SysUserMapper;
+import com.wanbang.vo.UserInfoVO;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 /**
 * @author 11965
@@ -85,6 +86,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         if (sysUser == null) {
             throw new WanbangException(ResultCode.FAIL);
         }
+        System.out.println(sysUser.getPassword());
+        System.out.println(password);
         if (password.equals(sysUser.getPassword())) {
             throw new WanbangException(400,"不能与原密码相同");
         }
@@ -106,6 +109,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         SysUser sysUser = sysUserMapper.selectById(id);
         System.out.println("sysUser"+sysUser);
         System.out.println("userInfoChangeReq"+userInfoChangeReq);
+        System.out.println(sysUser.getPassword());
+        System.out.println(userInfoChangeReq.getPassword());
+        if ((userInfoChangeReq.getPassword()).equals(sysUser.getPassword())) {
+            throw new WanbangException(ResultCode.THESAMEPSWERROR);
+        }
+        if (!(userInfoChangeReq.getOldPassword()).equals(sysUser.getPassword())){
+            throw new WanbangException(ResultCode.FAIL);
+        }
         SysUser newSysUser = new SysUser();
         newSysUser.setId(id);
         newSysUser.setUsername(userInfoChangeReq.getUsername());

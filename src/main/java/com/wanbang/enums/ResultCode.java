@@ -1,10 +1,11 @@
-package com.wanbang.common;
+package com.wanbang.enums;
 
 public enum ResultCode {
 
     SUCCESS(200, "成功"),
     FAIL(400, "失败"),
-    UNAUTHORIZED(401, "未授权");
+    UNAUTHORIZED(401, "未授权"),
+    THESAMEPSWERROR(402,"密码与原密码相同");
 
     private final int code;
     private final String message;

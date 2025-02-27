@@ -1,9 +1,8 @@
-package com.wanbang.config;
+package com.wanbang.exception;
 
 import cn.dev33.satoken.exception.NotLoginException;
-import cn.dev33.satoken.util.SaResult;
 import com.wanbang.common.Result;
-import com.wanbang.common.ResultCode;
+import com.wanbang.enums.ResultCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,7 +18,7 @@ public class GlobalExceptionHandler {
         return Result.fail(ResultCode.UNAUTHORIZED);
     }
     // 全局异常拦截
-    @ExceptionHandler
+    @ExceptionHandler(Exception.class)
     public Result handlerException(Exception e) {
         e.printStackTrace();
         return Result.fail(e.getMessage());

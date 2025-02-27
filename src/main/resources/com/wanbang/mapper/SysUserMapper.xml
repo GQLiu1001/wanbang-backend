@@ -25,7 +25,7 @@
         WHERE id = #{id}
 
     </update>
-    <select id="login" resultType="com.wanbang.common.LoginDTO">
+    <select id="login" resultType="com.wanbang.dto.LoginDTO">
         select user.id ,
                user.username,
                user.phone,
@@ -37,7 +37,7 @@
         where username = #{username}
             and password = #{password}
     </select>
-    <select id="selectUserListWithRole" resultType="com.wanbang.common.UserInfoVO">
+    <select id="selectUserListWithRole" resultType="com.wanbang.vo.UserInfoVO">
         SELECT
             user.id,
             user.username,

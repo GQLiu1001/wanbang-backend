@@ -1,14 +1,11 @@
 package com.wanbang.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wanbang.common.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.wanbang.common.UserInfoVO;
+import com.wanbang.vo.UserInfoVO;
 import com.wanbang.req.UserInfoChangeReq;
 import com.wanbang.resp.LoginResp;
-
-import java.util.List;
 
 /**
 * @author 11965

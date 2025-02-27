@@ -1,14 +1,11 @@
 package com.wanbang.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.wanbang.common.LoginDTO;
+import com.wanbang.dto.LoginDTO;
 import com.wanbang.common.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.wanbang.common.UserInfoVO;
-import com.wanbang.resp.LoginResp;
+import com.wanbang.vo.UserInfoVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 /**
 * @author 11965

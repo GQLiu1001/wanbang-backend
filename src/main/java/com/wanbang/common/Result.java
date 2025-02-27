@@ -1,5 +1,6 @@
 package com.wanbang.common;
 
+import com.wanbang.enums.ResultCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
