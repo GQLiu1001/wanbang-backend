@@ -32,20 +32,16 @@ public class MinioUpload {
                         .build();
         String originalFileName = file.getOriginalFilename();
         String fileExtension = getFileExtension(originalFileName);
-        String fileName = UUID.randomUUID().toString().replace("-", "") +"."+ fileExtension;
+        String shortUuid = UUID.randomUUID().toString().substring(0, 8);
+        String fileName = shortUuid + "." + fileExtension;
         // Upload known sized input stream.
         minioClient.putObject(
                 PutObjectArgs.builder().bucket(BUCKET_NAME)
                         .object(fileName)
                         .stream(inputStream, file.getSize(), -1)
                         .build());
-        // URL有效期1小时
-        return minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .method(Method.GET)
-                        .bucket(BUCKET_NAME)
-                        .object(fileName)
-                        .expiry(7, TimeUnit.DAYS) // URL有效期1小时
-                        .build());
+
+        return ENDPOINT + "/" + BUCKET_NAME + "/" + fileName;
     }
+
 }

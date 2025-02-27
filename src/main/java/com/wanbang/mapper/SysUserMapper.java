@@ -25,6 +25,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     IPage<UserInfoVO> selectUserListWithRole(IPage<UserInfoVO> page);
 
 
+    Integer updateUserAvatar(Integer id, String url);
 }
 
 

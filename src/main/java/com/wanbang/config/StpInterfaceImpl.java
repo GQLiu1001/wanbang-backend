@@ -41,7 +41,7 @@ public class StpInterfaceImpl  implements StpInterface {
         LambdaQueryWrapper<SysRole> wrapper1 = new LambdaQueryWrapper<>();
         wrapper1.eq(SysRole::getId, roleId);
         SysRole sysRole = sysRoleMapper.selectOne(wrapper1);
-        list.add(sysRole.getRoleName());
+        list.add(sysRole.getRoleKey());
         return list;
     }
 }

@@ -28,4 +28,7 @@ public interface SysUserService extends IService<SysUser> {
     IPage<UserInfoVO> getUserList(int page, int size);
 
     Integer updateUser(Long id, UserInfoChangeReq userInfoChangeReq);
+
+
+    Integer updateUserAvatar(Integer id, String url);
 }

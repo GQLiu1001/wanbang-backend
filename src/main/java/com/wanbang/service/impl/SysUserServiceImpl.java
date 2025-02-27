@@ -116,6 +116,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         return i;
     }
 
+    @Override
+    public Integer updateUserAvatar(Integer id, String url) {
+        Integer i = sysUserMapper.updateUserAvatar(id,url);
+        return i;
+    }
+
 
 }
 

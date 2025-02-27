@@ -23,11 +23,11 @@ import java.util.List;
 public class UserController {
     @Resource
     private  SysUserService sysUserService;
-    @SaCheckRole("admin")
     @Operation(summary = "删除用户")
     @DeleteMapping("/{id}")
     public Result deleteUser(@PathVariable Long id) {
-        List<String> roleList = StpUtil.getRoleList(id);
+        int loginIdAsInt = StpUtil.getLoginIdAsInt();
+        List<String> roleList = StpUtil.getRoleList(loginIdAsInt);
         System.out.println(roleList);
         StpUtil.checkRole("admin");
         Integer i = sysUserService.deleteUser(id);

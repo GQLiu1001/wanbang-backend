@@ -19,6 +19,12 @@
         id,username,password,phone,avatar,is_deleted,
         create_time,update_time
     </sql>
+    <update id="updateUserAvatar">
+        UPDATE sys_user
+        SET avatar = #{url}
+        WHERE id = #{id}
+
+    </update>
     <select id="login" resultType="com.wanbang.common.LoginDTO">
         select user.id ,
                user.username,
