@@ -19,11 +19,11 @@ import java.util.concurrent.TimeUnit;
 import static com.google.common.io.Files.getFileExtension;
 
 public class MinioUpload {
-    final static String BUCKET_NAME = "wanbang";
-    final static String ACCESS_KEY = "hP3zArCnQzJvCGblFkb4";
-    final static String SECRET_KEY = "XevaAMNhoPjmIbIRKqncuTscmeITfxBWDP19MlrM";
-    final static String ENDPOINT = "http://localhost:9000";
-    public static String uploadFile(MultipartFile file) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    final  String BUCKET_NAME = "wanbang";
+    final  String ACCESS_KEY = "hP3zArCnQzJvCGblFkb4";
+    final  String SECRET_KEY = "XevaAMNhoPjmIbIRKqncuTscmeITfxBWDP19MlrM";
+    final  String ENDPOINT = "http://localhost:9000";
+    public  String uploadFile(MultipartFile file) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         InputStream inputStream = file.getInputStream();
         MinioClient minioClient =
                 MinioClient.builder()

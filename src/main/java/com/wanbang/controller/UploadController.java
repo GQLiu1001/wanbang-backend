@@ -5,6 +5,7 @@ import com.wanbang.common.Result;
 import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.service.SysUserService;
+import com.wanbang.util.MinioUpload;
 import io.minio.errors.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
@@ -19,16 +20,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.wanbang.util.MinioUpload.uploadFile;
 
 @RestController
 public class UploadController {
+    @Resource
+    private MinioUpload minioUpload;
     @Resource
     private SysUserService sysUserService;
     @Operation(summary = "上传接口")
     @PostMapping("/api/upload")
     public Result upload(@RequestParam("file") MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        String url = uploadFile(file);
+        String url = minioUpload.uploadFile(file);
         if (url != null) {
             Map<String, String> data = new HashMap<>();
             data.put("fileUrl", url);
