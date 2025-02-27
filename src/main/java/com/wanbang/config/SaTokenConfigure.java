@@ -21,7 +21,6 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                         "/api/auth/**",          // 排除认证相关的接口
                         "/api/auth/logout",
                         "/swagger-ui/**",        // 排除 Swagger UI 所有路径
-
                         "/swagger-ui.html",      // 显式排除 Swagger UI 入口
                         "/v3/api-docs",          // 排除 OpenAPI 文档
                         "/v3/api-docs/**"        // 确保排除所有可能的 OpenAPI 文档路径
