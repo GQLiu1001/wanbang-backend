@@ -41,14 +41,14 @@
         order by SUM(info.adjusted_quantity) DESC
             limit 5
     </select>
-    <select id="getTopSalesTrend" resultType="com.wanbang.resp.SalesTrendResp">
+    <select id="getTopSalesTrend" resultType="com.wanbang.dto.SalesInfoDTO">
         SELECT
-            SUM(info.adjusted_quantity) AS sales_values,
-            SUM(info.adjusted_amount) AS adjusted_amounts
+            SUM(info.adjusted_quantity) AS adjusted_quantity,
+            SUM(info.adjusted_amount) AS adjusted_amount
         FROM
             order_info info
         WHERE
-            info.order_update_time LIKE CONCAT(#{yearMonth}, '%')
+            info.order_update_time LIKE CONCAT(#{date}, '%')
     </select>
 
 </mapper>

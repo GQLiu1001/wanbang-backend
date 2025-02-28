@@ -8,6 +8,7 @@ import com.wanbang.resp.SalesTrendResp;
 import com.wanbang.resp.TopSoldItemsResp;
 import com.wanbang.service.OrderInfoService;
 import com.wanbang.mapper.OrderInfoMapper;
+import com.wanbang.util.YearMonthUtil;
 import jakarta.annotation.Resource;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -37,12 +38,30 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public SalesTrendResp TopSalesTrend(String year, String month) {
-        String yearMonth = year + "-" + month;
-        System.out.println(yearMonth);
-        SalesTrendResp topSalesTrend = orderInfoMapper.getTopSalesTrend(yearMonth);
-        System.out.println(topSalesTrend);
-        return topSalesTrend;
+    public List<SalesTrendResp> TopSalesTrend(Integer year, Integer month , Integer length) {
+        List<String> dates = YearMonthUtil.format(year, month, length);
+        System.out.println(dates);
+        List<SalesTrendResp> salesTrendResps = new ArrayList<>();
+        dates.forEach(date -> {
+            System.out.println(date);
+            SalesInfoDTO salesInfoDTO = orderInfoMapper.getTopSalesTrend(date);
+            SalesTrendResp salesTrendResp = new SalesTrendResp();
+            salesTrendResp.setDates(date);
+            if (salesInfoDTO != null) {
+                salesTrendResp.setAdjustedAmount(salesInfoDTO.getAdjustedAmount());
+            }else {
+                salesTrendResp.setAdjustedAmount(0);
+            }
+            if (salesInfoDTO != null) {
+                salesTrendResp.setAdjustedQuantity(salesInfoDTO.getAdjustedQuantity());
+            }else {
+                salesTrendResp.setAdjustedQuantity(0);
+            }
+            salesTrendResps.add(salesTrendResp);
+            System.out.println(salesTrendResps);
+        });
+        System.out.println(salesTrendResps);
+        return salesTrendResps;
     }
 
 

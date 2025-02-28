@@ -16,5 +16,5 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     List<TopSoldItemsResp> TopSales();
 
-    SalesTrendResp TopSalesTrend(String year, String month);
+    List<SalesTrendResp> TopSalesTrend(Integer year, Integer month, Integer length);
 }

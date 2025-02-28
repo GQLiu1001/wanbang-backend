@@ -1,5 +1,6 @@
 package com.wanbang.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.wanbang.common.Result;
 import com.wanbang.resp.SalesTrendResp;
 import com.wanbang.resp.TopSoldItemsResp;
@@ -25,11 +26,13 @@ public class SalesController {
         }
         return Result.fail();
     }
+    @SaIgnore
     @Operation(summary = "获取销售趋势表单")
-    @GetMapping("/trend/{year}/{month}")
-    public Result<SalesTrendResp> TopSalesTrend(
-            @PathVariable("year") String year , @PathVariable("month") String month){
-        SalesTrendResp resp = orderInfoService.TopSalesTrend(year,month);
+    @GetMapping("/trend/{year}/{month}/{length}")
+    public Result<List<SalesTrendResp>> TopSalesTrend(
+            @PathVariable("year") Integer year , @PathVariable("month") Integer month
+    , @PathVariable("length") Integer length){
+        List<SalesTrendResp> resp = orderInfoService.TopSalesTrend(year,month,length);
         if (resp != null) {
             return Result.success(resp);
         }

@@ -1,25 +1,17 @@
-package com.wanbang;
+package com.wanbang.util;
 
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
-class WanbangBackendApplicationTests {
-
-    @Test
-    void contextLoads() {
-        Integer year = 2025;
-        List<String> list = new ArrayList<>();
-        Integer month = 1;
-        Integer MONTH_LENGTH = 13;
+public class YearMonthUtil {
+    public static List<String> format (Integer year , Integer month , Integer length){
+        List<String> list = new ArrayList<String>();
         String yearMonth = "";
-        if (month > MONTH_LENGTH) {
-            for (int i = MONTH_LENGTH; i > 0; i--) {
-                if (month < 10) {
+        if (month > length) {
+            for (int i = length; i > 0; i--) {
+                if (month < 10 && month > 0) {
                     String monthStr = "-0" + month;
                     yearMonth = year + monthStr;
                     System.out.println(yearMonth);
@@ -34,7 +26,7 @@ class WanbangBackendApplicationTests {
                 }
             }
         } else {
-            Integer num = MONTH_LENGTH - month;
+            Integer m = month;
             for (int i = month; i > 0; i--) {
                 String monthStr = "-0" + month;
                 yearMonth = year + monthStr;
@@ -42,9 +34,18 @@ class WanbangBackendApplicationTests {
                 list.add(yearMonth);
                 month--;
             }
-            for (int n = 0; n <= num / 12; n++) {
+            System.out.println(m);
+            Integer num = length - m;
+            System.out.println(num);
+            for (int n = 0; n <= num / 12 + 1; n++) {
+                System.out.println("第"+n+"次");
+                if (n>=1){
+                    num = num - 12;
+                }
+                System.out.println(num);
                 year = year - 1;
-                for (int i = 12; i > 12 - num; i--) {
+                System.out.println(year);
+                for (int i = 12; i > 12 - num && i>0; i--) {
                     if (i < 10) {
                         String monthStr = "-0" + i;
                         yearMonth = year + monthStr;
@@ -61,5 +62,7 @@ class WanbangBackendApplicationTests {
                 }
             }
         }
+        return list;
+
     }
 }

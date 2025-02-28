@@ -29,8 +29,7 @@ public class UploadController {
     @Operation(summary = "上传接口")
     @PostMapping("/api/upload")
     public Result upload(@RequestParam("file") MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        MinioUpload minioUpload = new MinioUpload();
-        String url = minioUpload.uploadFile(file);
+        String url = MinioUpload.uploadFile(file);
         if (url != null) {
             Map<String, String> data = new HashMap<>();
             data.put("fileUrl", url);

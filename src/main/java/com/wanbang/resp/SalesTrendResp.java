@@ -8,7 +8,9 @@ import java.util.List;
 // 销售趋势响应类
 @Data
 public class SalesTrendResp {
-    private Integer salesValues;
+    private String dates;
+    @JsonProperty("salesValues")
+    private Integer adjustedQuantity;
     @JsonProperty("amounts")
-    private Integer adjustedAmounts;
+    private Integer adjustedAmount;
 }
