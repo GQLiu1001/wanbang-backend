@@ -2,6 +2,10 @@ package com.wanbang.service;
 
 import com.wanbang.common.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.resp.SalesTrendResp;
+import com.wanbang.resp.TopSoldItemsResp;
+
+import java.util.List;
 
 /**
 * @author 11965
@@ -10,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface OrderInfoService extends IService<OrderInfo> {
 
+    List<TopSoldItemsResp> TopSales();
+
+    SalesTrendResp TopSalesTrend(String year, String month);
 }

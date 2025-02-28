@@ -2,6 +2,10 @@ package com.wanbang.mapper;
 
 import com.wanbang.common.OrderInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanbang.resp.SalesTrendResp;
+import com.wanbang.resp.TopSoldItemsResp;
+
+import java.util.List;
 
 /**
 * @author 11965
@@ -11,6 +15,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
+    List<TopSoldItemsResp> TopSales();
+
+    SalesTrendResp getTopSalesTrend(String yearMonth);
 }
 
 

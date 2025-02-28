@@ -28,4 +28,27 @@
         adjusted_amount,customer_phone,operator_id,order_remark,aftersale_type,
         aftersale_status,resolution_result,aftersale_operator,order_create_time,order_update_time
     </sql>
+    <select id="TopSales" resultType="com.wanbang.resp.TopSoldItemsResp">
+        select
+            inv.model_number,
+            SUM(info.adjusted_quantity) as adjusted_quantity
+        from
+            order_info info
+                left join
+            inventory_item inv
+            on inv.id = info.item_id
+        group by info.item_id
+        order by SUM(info.adjusted_quantity) DESC
+            limit 5
+    </select>
+    <select id="getTopSalesTrend" resultType="com.wanbang.resp.SalesTrendResp">
+        SELECT
+            SUM(info.adjusted_quantity) AS sales_values,
+            SUM(info.adjusted_amount) AS adjusted_amounts
+        FROM
+            order_info info
+        WHERE
+            info.order_update_time LIKE CONCAT(#{yearMonth}, '%')
+    </select>
+
 </mapper>
