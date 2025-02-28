@@ -50,5 +50,20 @@
         WHERE
             info.order_update_time LIKE CONCAT(#{date}, '%')
     </select>
+    <select id="getTodaySales" resultType="com.wanbang.resp.TodaySaleAmountResp">
+        SELECT
+            SUM(info.adjusted_amount) AS today_sale_amount
+        FROM
+            order_info info
+        WHERE
+            info.order_update_time LIKE CONCAT(#{dateStr}, '%')
+    </select>
+    <select id="getTotalSaleAmount" resultType="com.wanbang.resp.TotalSaleAmountResp">
+        SELECT
+            SUM(info.adjusted_amount) AS total_sale_amount
+        FROM
+            order_info info
+
+    </select>
 
 </mapper>

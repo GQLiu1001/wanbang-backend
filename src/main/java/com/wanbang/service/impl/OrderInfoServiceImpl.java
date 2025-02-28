@@ -5,7 +5,9 @@ import com.wanbang.common.OrderInfo;
 import com.wanbang.dto.SalesInfoDTO;
 import com.wanbang.mapper.InventoryItemMapper;
 import com.wanbang.resp.SalesTrendResp;
+import com.wanbang.resp.TodaySaleAmountResp;
 import com.wanbang.resp.TopSoldItemsResp;
+import com.wanbang.resp.TotalSaleAmountResp;
 import com.wanbang.service.OrderInfoService;
 import com.wanbang.mapper.OrderInfoMapper;
 import com.wanbang.util.YearMonthUtil;
@@ -62,6 +64,21 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         });
         System.out.println(salesTrendResps);
         return salesTrendResps;
+    }
+
+    @Override
+    public TodaySaleAmountResp getTodaySales(String dateStr) {
+        System.out.println(dateStr);
+        TodaySaleAmountResp resp = orderInfoMapper.getTodaySales(dateStr);
+        System.out.println(resp);
+        return resp;
+    }
+
+    @Override
+    public TotalSaleAmountResp getTotalSales() {
+        TotalSaleAmountResp resp = orderInfoMapper.getTotalSaleAmount();
+        System.out.println(resp);
+        return resp;
     }
 
 

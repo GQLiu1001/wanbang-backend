@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 @SpringBootTest
 class WanbangBackendApplicationTests {
@@ -61,5 +63,15 @@ class WanbangBackendApplicationTests {
                 }
             }
         }
+    }
+    @Test
+    void a(){
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar.get(Calendar.YEAR));
+        System.out.println(calendar.get(Calendar.MONTH));
+        System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
+        System.out.println(calendar.get(Calendar.HOUR_OF_DAY));
+        System.out.println(calendar.get(Calendar.DATE));
+
     }
 }
