@@ -1,5 +1,6 @@
 package com.wanbang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +10,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-02-24 15:24:52
 */
 public interface InventoryLogService extends IService<InventoryLog> {
+
+    IPage<InventoryLog> getLog(Integer page, Integer size, String startStr, String endStr, Integer operationType);
+
 
 }

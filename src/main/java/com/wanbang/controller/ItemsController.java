@@ -12,8 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-@SaIgnore
 @Tag(name = "库存相关接口")
 @RequestMapping("/api/inventory")
 @RestController

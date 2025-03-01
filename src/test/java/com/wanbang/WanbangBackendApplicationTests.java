@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 
@@ -73,5 +74,13 @@ class WanbangBackendApplicationTests {
         System.out.println(calendar.get(Calendar.HOUR_OF_DAY));
         System.out.println(calendar.get(Calendar.DATE));
 
+    }
+
+    @Test
+    void b(){
+        Date date = new Date();
+        System.out.println(date);
+        String date1 = date.toString().substring(0, 10);
+        System.out.println(date1);
     }
 }
