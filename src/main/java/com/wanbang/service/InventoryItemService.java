@@ -1,7 +1,12 @@
 package com.wanbang.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryItem;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.req.InventoryItemsChangeReq;
+import com.wanbang.resp.InventoryItemsResp;
+
+import java.util.List;
 
 /**
 * @author 11965
@@ -10,4 +15,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface InventoryItemService extends IService<InventoryItem> {
 
+    IPage<InventoryItem> getItems(Integer page, Integer size, Integer category, Integer surface);
+
+    Integer changeItems(Integer id, InventoryItemsChangeReq req);
+
+    Integer deleteById(Integer id);
 }

@@ -1,7 +1,11 @@
 package com.wanbang.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanbang.resp.InventoryItemsResp;
+
+import java.util.List;
 
 /**
 * @author 11965
@@ -11,6 +15,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface InventoryItemMapper extends BaseMapper<InventoryItem> {
 
+    IPage<InventoryItem> selectItemsList(IPage<InventoryItem> pageParam, Integer category, Integer surface);
 }
 
 

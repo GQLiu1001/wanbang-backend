@@ -25,4 +25,22 @@
         warehouse_num,total_pieces,price_per_piece,pieces_per_box,remark,
         create_time,update_time
     </sql>
+    <select id="getItems" resultType="com.wanbang.resp.InventoryItemsResp">
+        SELECT
+
+    </select>
+    <select id="selectItemsList" resultType="com.wanbang.common.InventoryItem">
+        SELECT
+            *
+        FROM inventory_item
+        <if test="category != null || surface != null">
+        WHERE 1=1
+            <if test="category != null">
+                AND category = #{category}
+            </if>
+            <if test="surface != null">
+                AND surface = #{surface}
+            </if>
+        </if>
+    </select>
 </mapper>
