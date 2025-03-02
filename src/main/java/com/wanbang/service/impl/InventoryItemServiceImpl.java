@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.InventoryItem;
 import com.wanbang.req.InventoryItemsChangeReq;
+import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
 import com.wanbang.service.InventoryItemService;
 import com.wanbang.mapper.InventoryItemMapper;
@@ -56,6 +57,30 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
         int update = inventoryItemMapper.delete(wrapper);
         System.out.println(update);
         return update;
+    }
+
+    @Override
+    public Integer postInboundItem(PostInboundReq postInboundReq) {
+        String modelNumber = postInboundReq.getModelNumber();
+        LambdaUpdateWrapper<InventoryItem> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(InventoryItem::getModelNumber, modelNumber);
+        boolean exists = inventoryItemMapper.exists(wrapper);
+        if (exists) {
+            Integer k = inventoryItemMapper.updateTotalPieces(modelNumber,postInboundReq.getTotalPieces());
+            if (k > 0) {
+                return k;
+            }
+            return 0;
+        }else {
+            InventoryItem item = new InventoryItem();
+            System.out.println(item);
+            BeanUtils.copyProperties(postInboundReq, item);
+            item.setCreateTime(new Date());
+            item.setUpdateTime(new Date());
+            int update = inventoryItemMapper.insert(item);
+            System.out.println("update:" + update);
+            return update;
+        }
     }
 }
 

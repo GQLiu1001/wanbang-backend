@@ -16,6 +16,8 @@ import java.util.Date;
 public interface InventoryLogMapper extends BaseMapper<InventoryLog> {
 
     IPage<InventoryLog> getLog(IPage<InventoryLog> pageParam, String startStr, String endStr, Integer operationType);
+
+
 }
 
 

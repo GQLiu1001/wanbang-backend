@@ -4,11 +4,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.InventoryLog;
+import com.wanbang.enums.ResultCode;
+import com.wanbang.exception.WanbangException;
 import com.wanbang.mapper.InventoryItemMapper;
+import com.wanbang.req.PostInboundReq;
 import com.wanbang.service.InventoryLogService;
 import com.wanbang.mapper.InventoryLogMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
 * @author 11965
@@ -28,6 +33,27 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
         IPage<InventoryLog> pages = inventoryLogMapper.getLog(iPage,startStr,endStr,operationType);
         System.out.println(pages);
         return pages;
+    }
+
+    @Override
+    public Integer postInboundLog(Integer operatorId, String modelNumber, Integer operationType , PostInboundReq postInboundReq) {
+        InventoryLog inventoryLog = new InventoryLog();
+        Long inventoryItemId = inventoryItemMapper.findInventoryItemId(modelNumber);
+        if (inventoryItemId == null) {
+            throw new WanbangException(ResultCode.FAIL);
+        }
+        System.out.println("inventoryItemId"+inventoryItemId);
+        inventoryLog.setInventoryItemId(inventoryItemId);
+        inventoryLog.setOperationType(1);
+        inventoryLog.setQuantityChange(postInboundReq.getTotalPieces());
+        inventoryLog.setOperatorId(Long.valueOf(operatorId));
+        inventoryLog.setTargetWarehouse(postInboundReq.getWarehouseNum());
+        inventoryLog.setRemark(postInboundReq.getRemark());
+        inventoryLog.setUpdateTime(new Date());
+        inventoryLog.setCreateTime(new Date());
+        Integer j = inventoryLogMapper.insert(inventoryLog);
+        System.out.println("j"+j);
+        return j;
     }
 
 

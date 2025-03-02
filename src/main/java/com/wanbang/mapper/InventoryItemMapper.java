@@ -16,6 +16,10 @@ import java.util.List;
 public interface InventoryItemMapper extends BaseMapper<InventoryItem> {
 
     IPage<InventoryItem> selectItemsList(IPage<InventoryItem> pageParam, Integer category, Integer surface);
+
+    Long findInventoryItemId(String modelNumber);
+
+    Integer updateTotalPieces(String modelNumber, Integer totalPieces);
 }
 
 

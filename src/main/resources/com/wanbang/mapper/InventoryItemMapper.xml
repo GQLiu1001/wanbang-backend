@@ -25,10 +25,13 @@
         warehouse_num,total_pieces,price_per_piece,pieces_per_box,remark,
         create_time,update_time
     </sql>
-    <select id="getItems" resultType="com.wanbang.resp.InventoryItemsResp">
-        SELECT
 
-    </select>
+    <update id="updateTotalPieces">
+        UPDATE inventory_item
+        SET total_pieces = total_pieces + #{totalPieces}
+        WHERE model_number = #{modelNumber}
+    </update>
+
     <select id="selectItemsList" resultType="com.wanbang.common.InventoryItem">
         SELECT
             *
@@ -42,5 +45,11 @@
                 AND surface = #{surface}
             </if>
         </if>
+    </select>
+    <select id="findInventoryItemId" resultType="java.lang.Long">
+        SELECT
+            id
+        FROM inventory_item
+        WHERE model_number = #{modelNumber}
     </select>
 </mapper>

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanbang.req.InventoryItemsChangeReq;
+import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface InventoryItemService extends IService<InventoryItem> {
     Integer changeItems(Integer id, InventoryItemsChangeReq req);
 
     Integer deleteById(Integer id);
+
+    Integer postInboundItem(PostInboundReq postInboundReq);
 }

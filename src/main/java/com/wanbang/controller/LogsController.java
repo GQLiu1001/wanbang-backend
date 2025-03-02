@@ -2,15 +2,18 @@ package com.wanbang.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.wanbang.common.InventoryItem;
 import com.wanbang.common.InventoryLog;
 import com.wanbang.common.Result;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.req.PostTransferReq;
 import com.wanbang.resp.InventoryLogResp;
+import com.wanbang.service.InventoryItemService;
 import com.wanbang.service.InventoryLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 @SaIgnore
@@ -20,7 +23,8 @@ import org.springframework.web.bind.annotation.*;
 public class  LogsController {
     @Resource
     private InventoryLogService inventoryLogService;
-
+    @Resource
+    private InventoryItemService inventoryItemService;
     @Operation(summary = "查询出入转库记录")
     @GetMapping
     public Result<InventoryLogResp> logs(
@@ -57,7 +61,21 @@ public class  LogsController {
         //可去除operator_id 使用到items (inventory_item表)
         // 其中operatorId inventory_item_id(数据库查询出) source_warehouse(warehouseNum) quantity_change(totalPieces) remark(新增log)
         //可重复使用到logs (inventory_log表)
-        return Result.success();
+        System.out.println(postInboundReq);
+        //先更新库存
+        Integer i = inventoryItemService.postInboundItem(postInboundReq);
+        System.out.println("i"+i);
+        if (i > 0){
+            return Result.success(i);
+        }
+        //再根据传入的型号 找到itemId 创建Log
+        Integer j = inventoryLogService.postInboundLog(postInboundReq.getOperatorId(),
+                postInboundReq.getModelNumber(),operationType,postInboundReq);
+        System.out.println("j"+j);
+        if (j > 0){
+            return Result.success(j);
+        }
+        return Result.fail();
     }
 
     @Operation(summary = "创建调库记录")
