@@ -11,7 +11,7 @@ import lombok.Data;
  * @TableName inventory_log
  */
 @Data
-public class InventoryLog {
+public class  InventoryLog {
     /**
      * 日志ID
      */

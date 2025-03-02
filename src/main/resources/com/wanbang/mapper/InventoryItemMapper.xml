@@ -31,6 +31,11 @@
         SET total_pieces = total_pieces + #{totalPieces}
         WHERE model_number = #{modelNumber}
     </update>
+    <update id="transfer">
+        UPDATE inventory_item
+        SET warehouse_num = #{targetWarehouse}
+        WHERE id = #{inventoryItemId}
+    </update>
 
     <select id="selectItemsList" resultType="com.wanbang.common.InventoryItem">
         SELECT

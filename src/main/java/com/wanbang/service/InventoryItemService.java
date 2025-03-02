@@ -23,4 +23,6 @@ public interface InventoryItemService extends IService<InventoryItem> {
     Integer deleteById(Integer id);
 
     Integer postInboundItem(PostInboundReq postInboundReq);
+
+    Integer transfer(Integer sourceWarehouse,Long inventoryItemId, Integer targetWarehouse);
 }

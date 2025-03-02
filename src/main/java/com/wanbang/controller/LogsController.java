@@ -2,7 +2,6 @@ package com.wanbang.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.wanbang.common.InventoryItem;
 import com.wanbang.common.InventoryLog;
 import com.wanbang.common.Result;
 import com.wanbang.req.PostInboundReq;
@@ -13,7 +12,7 @@ import com.wanbang.service.InventoryLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @SaIgnore
@@ -51,10 +50,10 @@ public class  LogsController {
         System.out.println(respResp);
         return Result.success(respResp);
     }
-
+    @Transactional(rollbackFor = Exception.class)  // 添加这一行
     @Operation(summary = "创建入库记录")
     @PostMapping("/inbound")
-    public Result inbound(@RequestBody PostInboundReq postInboundReq,@RequestParam Integer operationType) {
+    public Result inbound(@RequestBody PostInboundReq postInboundReq) {
         //方法主要有两个作用 1.入库更新items 如果没有就新insert一个
         //                2.创建一个入库logs
         //postInboundReq
@@ -65,25 +64,41 @@ public class  LogsController {
         //先更新库存
         Integer i = inventoryItemService.postInboundItem(postInboundReq);
         System.out.println("i"+i);
-        if (i > 0){
-            return Result.success(i);
+        if (i <= 0){
+            return Result.fail(i);
         }
         //再根据传入的型号 找到itemId 创建Log
         Integer j = inventoryLogService.postInboundLog(postInboundReq.getOperatorId(),
-                postInboundReq.getModelNumber(),operationType,postInboundReq);
+                postInboundReq.getModelNumber(),postInboundReq);
         System.out.println("j"+j);
-        if (j > 0){
-            return Result.success(j);
+        if (j <= 0){
+            return Result.fail(j);
         }
-        return Result.fail();
+        return Result.success();
     }
-
+    @Transactional(rollbackFor = Exception.class)  // 添加这一行
     @Operation(summary = "创建调库记录")
     @PostMapping("/transfer")
-    public Result transfer(@RequestBody PostTransferReq postTransferReq, @RequestParam Integer operationType) {
+    public Result transfer(@RequestBody PostTransferReq postTransferReq) {
         //方法主要有两个作用 1.调库更新items的信息 (改个warehouse_num)
         // (提供了inventory_item_id和quantity_change和source_warehouse和target_warehouse)
         //                2.创建一个log
+        if ((postTransferReq.getSourceWarehouse() >=6 || postTransferReq.getSourceWarehouse() <= 0)
+                ||
+                (postTransferReq.getTargetWarehouse() >=6 || postTransferReq.getTargetWarehouse() <= 0)) {
+            return Result.fail();
+        }
+        System.out.println("postTransferReq = " + postTransferReq);
+        Integer i =inventoryItemService.transfer( postTransferReq.getSourceWarehouse(),
+                postTransferReq.getInventoryItemId(), postTransferReq.getTargetWarehouse());
+        if (i<=0){
+            return Result.fail();
+        }
+            Integer j =inventoryLogService.transfer(postTransferReq);
+        if (j<=0){
+            return Result.fail(j);
+        }
         return Result.success();
     }
+
 }

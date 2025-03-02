@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanbang.req.PostInboundReq;
+import com.wanbang.req.PostTransferReq;
 
 /**
 * @author 11965
@@ -15,5 +16,7 @@ public interface InventoryLogService extends IService<InventoryLog> {
     IPage<InventoryLog> getLog(Integer page, Integer size, String startStr, String endStr, Integer operationType);
 
 
-    Integer postInboundLog(Integer operatorId, String modelNumber, Integer operationType, PostInboundReq postInboundReq);
+    Integer postInboundLog(Integer operatorId, String modelNumber, PostInboundReq postInboundReq);
+
+    Integer transfer(PostTransferReq postTransferReq);
 }

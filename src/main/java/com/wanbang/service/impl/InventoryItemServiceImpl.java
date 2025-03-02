@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.InventoryItem;
+import com.wanbang.enums.ResultCode;
+import com.wanbang.exception.WanbangException;
 import com.wanbang.req.InventoryItemsChangeReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
 * @author 11965
@@ -81,6 +84,20 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
             System.out.println("update:" + update);
             return update;
         }
+    }
+
+    @Override
+    public Integer transfer(Integer sourceWarehouse,Long inventoryItemId, Integer targetWarehouse) {
+        LambdaUpdateWrapper<InventoryItem> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(InventoryItem::getId, inventoryItemId);
+        InventoryItem inventoryItem = inventoryItemMapper.selectOne(wrapper);
+        if (!Objects.equals(inventoryItem.getWarehouseNum(), sourceWarehouse)) {
+            throw new WanbangException(ResultCode.FAIL);
+        }
+        System.out.println("inventoryItemId = " + inventoryItemId);
+        Integer i = inventoryItemMapper.transfer(inventoryItemId,targetWarehouse);
+        System.out.println("i = " + i);
+        return i;
     }
 }
 

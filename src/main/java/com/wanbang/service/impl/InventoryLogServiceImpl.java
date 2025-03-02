@@ -1,16 +1,20 @@
 package com.wanbang.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanbang.common.InventoryItem;
 import com.wanbang.common.InventoryLog;
 import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.mapper.InventoryItemMapper;
 import com.wanbang.req.PostInboundReq;
+import com.wanbang.req.PostTransferReq;
 import com.wanbang.service.InventoryLogService;
 import com.wanbang.mapper.InventoryLogMapper;
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -36,7 +40,7 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
     }
 
     @Override
-    public Integer postInboundLog(Integer operatorId, String modelNumber, Integer operationType , PostInboundReq postInboundReq) {
+    public Integer postInboundLog(Integer operatorId, String modelNumber , PostInboundReq postInboundReq) {
         InventoryLog inventoryLog = new InventoryLog();
         Long inventoryItemId = inventoryItemMapper.findInventoryItemId(modelNumber);
         if (inventoryItemId == null) {
@@ -51,6 +55,24 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
         inventoryLog.setRemark(postInboundReq.getRemark());
         inventoryLog.setUpdateTime(new Date());
         inventoryLog.setCreateTime(new Date());
+        Integer j = inventoryLogMapper.insert(inventoryLog);
+        System.out.println("j"+j);
+        return j;
+    }
+
+    @Override
+    public Integer transfer(PostTransferReq postTransferReq) {
+        LambdaQueryWrapper<InventoryItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(InventoryItem::getId, postTransferReq.getInventoryItemId());
+        InventoryItem inventoryItem = inventoryItemMapper.selectOne(wrapper);
+
+        InventoryLog inventoryLog = new InventoryLog();
+        BeanUtils.copyProperties(postTransferReq, inventoryLog);
+        inventoryLog.setUpdateTime(new Date());
+        inventoryLog.setCreateTime(new Date());
+        inventoryLog.setQuantityChange(inventoryItem.getTotalPieces());
+        inventoryLog.setOperationType(3);
+        System.out.println("inventoryLog = " + inventoryLog);
         Integer j = inventoryLogMapper.insert(inventoryLog);
         System.out.println("j"+j);
         return j;

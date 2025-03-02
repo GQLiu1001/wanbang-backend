@@ -7,15 +7,13 @@ import lombok.Data;
 public class PostTransferReq {
     //operate_type 请求参数
     @JsonProperty("inventory_item_id")
-    private Integer inventory_item_id;
+    private Long inventoryItemId;
     @JsonProperty("operator_id")
-    private Integer operator_id;
+    private Long operatorId;
     @JsonProperty("source_warehouse")
-    private Integer source_warehouse;
+    private Integer sourceWarehouse;
     @JsonProperty("target_warehouse")
-    private Integer target_warehouse;
-    @JsonProperty("quantity_change")
-    private Integer quantity_change;
+    private Integer targetWarehouse;
     private String remark;
 
 }
