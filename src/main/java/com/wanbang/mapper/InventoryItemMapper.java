@@ -22,6 +22,8 @@ public interface InventoryItemMapper extends BaseMapper<InventoryItem> {
     Integer updateTotalPieces(String modelNumber, Integer totalPieces);
 
     Integer transfer(Long inventoryItemId, Integer targetWarehouse);
+
+    Integer itemReversal(Integer operationType, Long inventoryItemId, Integer sourceWarehouse, Integer quantityChange);
 }
 
 

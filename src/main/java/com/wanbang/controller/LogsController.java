@@ -1,9 +1,12 @@
 package com.wanbang.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import com.baomidou.mybatisplus.core.mapper.Mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.wanbang.common.InventoryItem;
 import com.wanbang.common.InventoryLog;
 import com.wanbang.common.Result;
+import com.wanbang.req.InventoryLogChangeReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.req.PostTransferReq;
 import com.wanbang.resp.InventoryLogResp;
@@ -11,7 +14,10 @@ import com.wanbang.service.InventoryItemService;
 import com.wanbang.service.InventoryLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +30,8 @@ public class  LogsController {
     private InventoryLogService inventoryLogService;
     @Resource
     private InventoryItemService inventoryItemService;
+
+
     @Operation(summary = "查询出入转库记录")
     @GetMapping
     public Result<InventoryLogResp> logs(
@@ -100,5 +108,38 @@ public class  LogsController {
         }
         return Result.success();
     }
-
+    @Transactional(rollbackFor = Exception.class)
+    @Operation(summary = "修改出入调库记录")
+    @PutMapping()
+    public Result changeLog(@RequestBody InventoryLogChangeReq req) {
+        //前端的编辑后提交看似是编辑 其实是更新了两条数据 有用的只有req的Id
+        Long logId = req.getId();
+        //冲正 通过前端操作的id找出记录
+        InventoryLog inventoryLog = inventoryLogService.getById(logId);
+        //冲正log
+        Integer i = inventoryLogService.itemReversal(inventoryLog);
+        //冲正item
+        Integer j = inventoryItemService.itemReversal(inventoryLog);
+        //处理req 请求
+        //调库
+        if (req.getOperationType() == 3) {
+            PostTransferReq transReq = new PostTransferReq();
+            BeanUtils.copyProperties(req, transReq);
+            this.transfer(transReq);
+        }
+        //入库
+        if (req.getOperationType() == 1){
+            PostInboundReq postReq = new PostInboundReq();
+            InventoryItem byId = inventoryItemService.getById(req.getInventoryItemId());
+            BeanUtils.copyProperties(byId, postReq);
+            postReq.setTotalPieces(req.getQuantityChange());
+            postReq.setOperatorId(req.getOperatorId());
+            this.inbound(postReq);
+        }
+        //出库
+        if (req.getOperationType() == 2){
+            //TODO 和订单相关
+        }
+        return Result.success();
+    }
 }

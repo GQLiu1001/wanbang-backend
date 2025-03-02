@@ -24,7 +24,7 @@ public class  InventoryLog {
     private Long inventoryItemId;
 
     /**
-     * 操作类型（1=入库 2=出库 3=调拨）
+     * 操作类型（1=入库 2=出库 3=调拨 4=冲正）
      */
     private Integer operationType;
 

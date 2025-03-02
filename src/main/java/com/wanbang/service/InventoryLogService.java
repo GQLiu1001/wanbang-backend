@@ -15,8 +15,9 @@ public interface InventoryLogService extends IService<InventoryLog> {
 
     IPage<InventoryLog> getLog(Integer page, Integer size, String startStr, String endStr, Integer operationType);
 
+    Integer itemReversal(InventoryLog inventoryLog);
 
-    Integer postInboundLog(Integer operatorId, String modelNumber, PostInboundReq postInboundReq);
+    Integer postInboundLog(Long operatorId, String modelNumber, PostInboundReq postInboundReq);
 
     Integer transfer(PostTransferReq postTransferReq);
 }

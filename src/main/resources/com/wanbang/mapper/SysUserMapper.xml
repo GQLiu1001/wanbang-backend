@@ -21,7 +21,7 @@
     </sql>
     <update id="updateUserAvatar">
         UPDATE sys_user
-        SET avatar = #{url}
+        SET avatar = #{url} , update_time = NOW()
         WHERE id = #{id}
 
     </update>

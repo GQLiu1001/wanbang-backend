@@ -28,14 +28,31 @@
 
     <update id="updateTotalPieces">
         UPDATE inventory_item
-        SET total_pieces = total_pieces + #{totalPieces}
+        SET total_pieces = total_pieces + #{totalPieces} , update_time = NOW()
         WHERE model_number = #{modelNumber}
     </update>
     <update id="transfer">
         UPDATE inventory_item
-        SET warehouse_num = #{targetWarehouse}
+        SET warehouse_num = #{targetWarehouse}, update_time = NOW()
         WHERE id = #{inventoryItemId}
     </update>
+    <update id="itemReversal">
+        UPDATE inventory_item
+        <set>
+            update_time = NOW(),
+            <if test="operationType == 3">
+                warehouse_num = #{sourceWarehouse},
+            </if>
+            <if test="operationType == 2">
+                total_pieces = total_pieces + #{quantityChange},
+            </if>
+            <if test="operationType == 1">
+                total_pieces = total_pieces - #{quantityChange},
+            </if>
+        </set>
+        WHERE id = #{inventoryItemId}
+    </update>
+
 
     <select id="selectItemsList" resultType="com.wanbang.common.InventoryItem">
         SELECT

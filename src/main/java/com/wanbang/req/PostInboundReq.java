@@ -12,7 +12,7 @@ public class PostInboundReq {
     //operator_type 为请求参数
 
     @JsonProperty("operator_id")
-    private Integer operatorId;
+    private Long operatorId;
 
     @JsonProperty("model_number")
     private String modelNumber;

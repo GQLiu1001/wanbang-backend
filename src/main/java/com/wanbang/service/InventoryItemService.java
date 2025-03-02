@@ -3,7 +3,9 @@ package com.wanbang.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryItem;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.common.InventoryLog;
 import com.wanbang.req.InventoryItemsChangeReq;
+import com.wanbang.req.InventoryLogChangeReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
 
@@ -25,4 +27,7 @@ public interface InventoryItemService extends IService<InventoryItem> {
     Integer postInboundItem(PostInboundReq postInboundReq);
 
     Integer transfer(Integer sourceWarehouse,Long inventoryItemId, Integer targetWarehouse);
+
+
+    Integer itemReversal(InventoryLog req);
 }

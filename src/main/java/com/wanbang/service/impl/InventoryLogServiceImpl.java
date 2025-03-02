@@ -40,7 +40,40 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
     }
 
     @Override
-    public Integer postInboundLog(Integer operatorId, String modelNumber , PostInboundReq postInboundReq) {
+    public Integer itemReversal(InventoryLog inventoryLog) {
+        // 冲正记录
+        System.out.println("需要冲正的记录"+inventoryLog);
+        Long inventoryItemId = inventoryLog.getInventoryItemId();
+        Integer quantityChange =inventoryLog.getQuantityChange();
+        Long operatorId = inventoryLog.getOperatorId();
+        Integer sourceWarehouse =inventoryLog.getSourceWarehouse();
+        Integer targetWarehouse =inventoryLog.getTargetWarehouse();
+        Integer operationType = inventoryLog.getOperationType();
+
+        InventoryLog inventoryLog1 = new InventoryLog();
+        inventoryLog1.setInventoryItemId(inventoryItemId);
+        inventoryLog1.setOperationType(4);
+        inventoryLog1.setOperatorId(operatorId);
+        //如果是调库 源库目标库调换 数量不变
+        if (operationType == 3){
+            inventoryLog1.setQuantityChange(quantityChange);
+            inventoryLog1.setSourceWarehouse(targetWarehouse);
+            inventoryLog1.setTargetWarehouse(sourceWarehouse);
+        }
+        //如果是出库 入库 不用改变仓库 数量相反
+        inventoryLog1.setQuantityChange(-quantityChange);
+        inventoryLog1.setTargetWarehouse(targetWarehouse);
+        inventoryLog1.setSourceWarehouse(sourceWarehouse);
+        inventoryLog1.setRemark("冲正记录");
+        inventoryLog1.setCreateTime(new Date());
+        inventoryLog1.setUpdateTime(new Date());
+        int insert = inventoryLogMapper.insert(inventoryLog1);
+        System.out.println("insert = " + insert);
+        return insert;
+    }
+
+    @Override
+    public Integer postInboundLog(Long operatorId, String modelNumber , PostInboundReq postInboundReq) {
         InventoryLog inventoryLog = new InventoryLog();
         Long inventoryItemId = inventoryItemMapper.findInventoryItemId(modelNumber);
         if (inventoryItemId == null) {
@@ -50,7 +83,7 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
         inventoryLog.setInventoryItemId(inventoryItemId);
         inventoryLog.setOperationType(1);
         inventoryLog.setQuantityChange(postInboundReq.getTotalPieces());
-        inventoryLog.setOperatorId(Long.valueOf(operatorId));
+        inventoryLog.setOperatorId(operatorId);
         inventoryLog.setTargetWarehouse(postInboundReq.getWarehouseNum());
         inventoryLog.setRemark(postInboundReq.getRemark());
         inventoryLog.setUpdateTime(new Date());

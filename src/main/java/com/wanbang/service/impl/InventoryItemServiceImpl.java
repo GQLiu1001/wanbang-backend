@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.InventoryItem;
+import com.wanbang.common.InventoryLog;
 import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.req.InventoryItemsChangeReq;
+import com.wanbang.req.InventoryLogChangeReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
 import com.wanbang.service.InventoryItemService;
@@ -76,10 +78,10 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
             return 0;
         }else {
             InventoryItem item = new InventoryItem();
-            System.out.println(item);
             BeanUtils.copyProperties(postInboundReq, item);
             item.setCreateTime(new Date());
             item.setUpdateTime(new Date());
+            System.out.println(item);
             int update = inventoryItemMapper.insert(item);
             System.out.println("update:" + update);
             return update;
@@ -90,15 +92,27 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
     public Integer transfer(Integer sourceWarehouse,Long inventoryItemId, Integer targetWarehouse) {
         LambdaUpdateWrapper<InventoryItem> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(InventoryItem::getId, inventoryItemId);
-        InventoryItem inventoryItem = inventoryItemMapper.selectOne(wrapper);
-        if (!Objects.equals(inventoryItem.getWarehouseNum(), sourceWarehouse)) {
-            throw new WanbangException(ResultCode.FAIL);
-        }
         System.out.println("inventoryItemId = " + inventoryItemId);
         Integer i = inventoryItemMapper.transfer(inventoryItemId,targetWarehouse);
         System.out.println("i = " + i);
         return i;
     }
+
+    @Override
+    public Integer itemReversal(InventoryLog req) {
+        //如果是调库 只需要改Item的仓库名称
+        //如果是入库 只需要改Item的数量
+        //如果是出库 只需要改Item的数量
+        Long inventoryItemId = req.getInventoryItemId();
+        Integer operationType = req.getOperationType();
+        Integer quantityChange = req.getQuantityChange();
+        Integer sourceWarehouse = req.getSourceWarehouse();
+        Integer i = inventoryItemMapper.itemReversal(operationType,inventoryItemId,sourceWarehouse,quantityChange);
+        System.out.println("i = " + i);
+        return i;
+    }
+
+
 }
 
 
