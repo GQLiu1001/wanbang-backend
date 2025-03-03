@@ -26,13 +26,15 @@ public class YearMonthUtil {
                 }
             }
         } else {
+            Integer m = month;
             for (int i = month; i > 0; i--) {
                 String monthStr = "-0" + month;
                 yearMonth = year + monthStr;
                 System.out.println(yearMonth);
                 list.add(yearMonth);
+                month--;
             }
-            Integer num = length - month;
+            Integer num = length - m;
             System.out.println(num);
             for (int n = 0; n <= num / 12 + 1; n++) {
                 System.out.println("第"+n+"次");

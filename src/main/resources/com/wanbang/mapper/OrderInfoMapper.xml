@@ -24,25 +24,22 @@
 
     <select id="TopSales" resultType="com.wanbang.resp.TopSoldItemsResp">
         select
-            inv.model_number,
-            SUM(info.adjusted_quantity) as adjusted_quantity
+            model_number,
+            SUM(adjusted_quantity) as adjusted_quantity
         from
-            order_info info
-                left join
-            inventory_item inv
-            on inv.id = info.item_id
-        group by info.item_id
-        order by SUM(info.adjusted_quantity) DESC
+            order_item
+        group by model_number
+        order by SUM(adjusted_quantity) DESC
             limit 5
     </select>
     <select id="getTopSalesTrend" resultType="com.wanbang.dto.SalesInfoDTO">
         SELECT
-            SUM(info.adjusted_quantity) AS adjusted_quantity,
-            SUM(info.adjusted_amount) AS adjusted_amount
+            SUM(subtotal) AS adjusted_amount,
+            SUM(adjusted_quantity) AS adjusted_quantity
         FROM
-            order_info info
+            order_item
         WHERE
-            info.order_update_time LIKE CONCAT(#{date}, '%')
+            update_time LIKE CONCAT(#{date}, '%')
     </select>
     <select id="getTodaySales" resultType="com.wanbang.resp.TodaySaleAmountResp">
         SELECT

@@ -39,6 +39,9 @@ public class SalesController {
         }
         return Result.fail();
     }
+
+
+
     @Operation(summary = "获取今日销售额")
     @GetMapping("/today-amount")
     public Result<TodaySaleAmountResp> getTodaySaleAmount(){

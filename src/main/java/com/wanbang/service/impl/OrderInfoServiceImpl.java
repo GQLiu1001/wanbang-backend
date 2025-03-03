@@ -35,7 +35,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     implements OrderInfoService{
     @Resource
     private OrderInfoMapper orderInfoMapper;
-    //TODO TopSales和TopSalesTrend更改
+
     @Override
     public List<TopSoldItemsResp> TopSales() {
         List<TopSoldItemsResp> topSoldItemsResp = orderInfoMapper.TopSales();
@@ -69,6 +69,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         System.out.println(salesTrendResps);
         return salesTrendResps;
     }
+
+
+
+
 
     @Override
     public TodaySaleAmountResp getTodaySales(String dateStr) {
