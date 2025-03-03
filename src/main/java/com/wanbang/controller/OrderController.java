@@ -155,7 +155,6 @@ public class OrderController {
         Integer i1 = inventoryItemService.itemReversal(reversalLog2);
         System.out.println("i1 = " + i1);
         // inventory_log 冲正出库记录 ? 自己手动写一个?因为没有关于inventory_log的相关联系
-
         reversalLog.setInventoryItemId(originItem.getItemId());
         reversalLog.setQuantityChange(changeQuantity2);
         reversalLog.setOperatorId(StpUtil.getLoginIdAsLong());
@@ -164,7 +163,6 @@ public class OrderController {
         reversalLog.setCreateTime(new Date());
         //inventoryLogService.itemReversal这里的方法和inventoryItemService.itemReversal不一样
         Integer k = inventoryLogService.itemReversal(reversalLog);
-
         return Result.success();
 
     }
