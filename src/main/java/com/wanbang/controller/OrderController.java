@@ -130,32 +130,41 @@ public class OrderController {
         // order_item 直接改quantity price_per_piece subtotal
         Integer i = orderItemService.updateOrderItem(id,orderItemChangeReq);
         // order_info的adjusted_amount(subtotal) order_update_time
-        //TODO 加减反了
         Integer j = orderInfoService.updateOrderItem(originItem,orderItemChangeReq.getSubtotal());
-        // inventory_log 冲正出库记录 ? 自己手动写一个?因为没有关于inventory_log的相关联系
-        //TODO 有记录但是数量不对?
+        // inventory_item 的total_pieces
+        //上一次的数量
         InventoryLog reversalLog = new InventoryLog();
+        InventoryLog reversalLog2 = new InventoryLog();
+        Integer originQuantity = originItem.getAdjustedQuantity();
+        System.out.println("originQuantity = " + originQuantity);
+        Integer changeQuantity = orderItemChangeReq.getQuantity() - originQuantity;
+        Integer changeQuantity2 = orderItemChangeReq.getQuantity() - originQuantity;
+        reversalLog2.setOperationType(1);
+        reversalLog.setOperationType(1);
+        //当changeQuantity大于或者小于0的时候 冲正的类型是不一样的 入库和出库
+        if (changeQuantity < 0) {
+            changeQuantity = -changeQuantity;
+            reversalLog2.setOperationType(2);
+            reversalLog.setOperationType(2);
+        }
+        System.out.println("changeQuantity = " + changeQuantity);
+        reversalLog2.setInventoryItemId(originItem.getItemId());
+        reversalLog2.setQuantityChange(changeQuantity);
+        InventoryItem item = inventoryItemService.getById(originItem.getItemId());
+        reversalLog2.setSourceWarehouse(item.getWarehouseNum());
+        Integer i1 = inventoryItemService.itemReversal(reversalLog2);
+        System.out.println("i1 = " + i1);
+        // inventory_log 冲正出库记录 ? 自己手动写一个?因为没有关于inventory_log的相关联系
+
         reversalLog.setInventoryItemId(originItem.getItemId());
-        reversalLog.setQuantityChange(orderItemChangeReq.getQuantity());
+        reversalLog.setQuantityChange(changeQuantity2);
         reversalLog.setOperatorId(StpUtil.getLoginIdAsLong());
         reversalLog.setRemark("出库的冲正记录");
         reversalLog.setUpdateTime(new Date());
         reversalLog.setCreateTime(new Date());
-        reversalLog.setOperationType(2);
-        InventoryItem item = inventoryItemService.getById(originItem.getItemId());
-        reversalLog.setSourceWarehouse(item.getWarehouseNum());
+        //inventoryLogService.itemReversal这里的方法和inventoryItemService.itemReversal不一样
         Integer k = inventoryLogService.itemReversal(reversalLog);
-        // inventory_item 的total_pieces
-        //TODO 数量加减反了
-        Integer originQuantity = originItem.getAdjustedQuantity();
-        Integer changeQuantity = orderItemChangeReq.getQuantity() - originQuantity;
-        InventoryLog reversalLog2 = new InventoryLog();
-        reversalLog2.setInventoryItemId(originItem.getItemId());
-        reversalLog2.setQuantityChange(changeQuantity);
-        reversalLog2.setSourceWarehouse(item.getWarehouseNum());
-        reversalLog2.setOperationType(2);
-        Integer i1 = inventoryItemService.itemReversal(reversalLog2);
-        System.out.println("i1 = " + i1);
+
         return Result.success();
 
     }

@@ -137,8 +137,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         BigDecimal adjustedAmount = originInfo.getAdjustedAmount();
         //修改原来记录的时间
         originInfo.setOrderUpdateTime(new Date());
-        //修改原来记录的金钱
-        originInfo.setAdjustedAmount(adjustedAmount.add(changeSubtotal));
+        //是根据上一次操作的数值 ！！！
+        originInfo.setAdjustedAmount(adjustedAmount.subtract(changeSubtotal));
+
         int i = orderInfoMapper.updateById(originInfo);
         System.out.println("i = " + i);
 

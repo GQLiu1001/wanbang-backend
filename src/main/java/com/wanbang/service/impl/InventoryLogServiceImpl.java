@@ -58,7 +58,6 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
 
         InventoryLog inventoryLog1 = new InventoryLog();
         inventoryLog1.setInventoryItemId(inventoryItemId);
-        inventoryLog1.setOperationType(4);
         inventoryLog1.setOperatorId(operatorId);
         //如果是调库 源库目标库调换 数量不变
         if (operationType == 3){
@@ -73,6 +72,8 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
         inventoryLog1.setRemark("冲正记录");
         inventoryLog1.setCreateTime(new Date());
         inventoryLog1.setUpdateTime(new Date());
+        inventoryLog1.setOperationType(4);
+        System.out.println("inventoryLog1 = " + inventoryLog1);
         int insert = inventoryLogMapper.insert(inventoryLog1);
         System.out.println("insert = " + insert);
         return insert;
