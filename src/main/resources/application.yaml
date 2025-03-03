@@ -22,8 +22,6 @@ sa-token:
   token-style: uuid
   is-log: true
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: AUTO

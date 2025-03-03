@@ -3,6 +3,7 @@ package com.wanbang.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.OrderItem;
+import com.wanbang.req.OrderItemChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.service.OrderItemService;
 import com.wanbang.mapper.OrderItemMapper;
@@ -45,6 +46,20 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
         List<OrderItem> orderItems = orderItemMapper.selectList(wrapper);
         System.out.println("orderItems = " + orderItems);
         return orderItems;
+    }
+
+    @Override
+    public Integer updateOrderItem(Long id, OrderItemChangeReq orderItemChangeReq) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setId(id);
+        orderItem.setAdjustedQuantity(orderItemChangeReq.getQuantity());
+        orderItem.setPricePerPiece(orderItemChangeReq.getPricePerPiece());
+        orderItem.setSubtotal(orderItemChangeReq.getSubtotal());
+        orderItem.setUpdateTime(new Date());
+        System.out.println("修改后的orderItem = " + orderItem);
+        int i = orderItemMapper.updateById(orderItem);
+        System.out.println("i = " + i);
+        return i;
     }
 }
 

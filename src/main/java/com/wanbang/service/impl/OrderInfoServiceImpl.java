@@ -4,14 +4,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanbang.common.InventoryItem;
 import com.wanbang.common.OrderInfo;
+import com.wanbang.common.OrderItem;
 import com.wanbang.dto.OrderInfoDTO;
 import com.wanbang.dto.SalesInfoDTO;
+import com.wanbang.mapper.InventoryItemMapper;
+import com.wanbang.req.OrderItemChangeReq;
 import com.wanbang.req.OrderPostReq;
 import com.wanbang.resp.SalesTrendResp;
 import com.wanbang.resp.TodaySaleAmountResp;
 import com.wanbang.resp.TopSoldItemsResp;
 import com.wanbang.resp.TotalSaleAmountResp;
+import com.wanbang.service.InventoryItemService;
 import com.wanbang.service.OrderInfoService;
 import com.wanbang.mapper.OrderInfoMapper;
 import com.wanbang.util.YearMonthUtil;
@@ -21,6 +26,7 @@ import org.simpleframework.xml.Order;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +41,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     implements OrderInfoService{
     @Resource
     private OrderInfoMapper orderInfoMapper;
-
+    @Resource
+    private InventoryItemMapper inventoryItemMapper;
     @Override
     public List<TopSoldItemsResp> TopSales() {
         List<TopSoldItemsResp> topSoldItemsResp = orderInfoMapper.TopSales();
@@ -111,6 +118,31 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         IPage<OrderInfoDTO> resp = orderInfoMapper.getOrderList(pageParam,startStr,endStr,customerPhone);
         System.out.println("resp = " + resp);
         return resp;
+    }
+
+    @Override
+    public Integer updateOrderItem(OrderItem originItem, BigDecimal subtotal) {
+        Long orderId = originItem.getOrderId();
+        //准备要修改的originInfo
+        OrderInfo originInfo = orderInfoMapper.selectById(orderId);
+        // order_info的adjusted_amount(subtotal) order_update_time
+        //原本该记录的金钱 originSubtotal
+        BigDecimal originSubtotal = originItem.getSubtotal();
+        //修改后的记录的金钱 subtotal
+        //相差 originSubtotal-subtotal
+        BigDecimal changeSubtotal =
+                originSubtotal.subtract(subtotal);
+        //如果大于0 orderInfo加差价 如果小于0 orderInfo减差价
+        //获取记录的钱
+        BigDecimal adjustedAmount = originInfo.getAdjustedAmount();
+        //修改原来记录的时间
+        originInfo.setOrderUpdateTime(new Date());
+        //修改原来记录的金钱
+        originInfo.setAdjustedAmount(adjustedAmount.add(changeSubtotal));
+        int i = orderInfoMapper.updateById(originInfo);
+        System.out.println("i = " + i);
+
+        return i;
     }
 }
 

@@ -94,6 +94,7 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
         inventoryLog.setRemark("入库"+postInboundReq.getModelNumber());
         inventoryLog.setUpdateTime(new Date());
         inventoryLog.setCreateTime(new Date());
+        System.out.println("inventoryLog = " + inventoryLog);
         Integer j = inventoryLogMapper.insert(inventoryLog);
         System.out.println("j"+j);
         return j;
@@ -123,7 +124,7 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
             Long itemId = item.getItemId();
             Integer quantity = item.getQuantity();
             Integer sourceWarehouse = item.getSourceWarehouse();
-            Long loginId = (Long) StpUtil.getLoginIdAsLong();
+            Long loginId = StpUtil.getLoginIdAsLong();
             InventoryLog inventoryLog = new InventoryLog();
             inventoryLog.setInventoryItemId(itemId);
             inventoryLog.setOperationType(2);

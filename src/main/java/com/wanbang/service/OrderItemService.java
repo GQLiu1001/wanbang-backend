@@ -2,6 +2,7 @@ package com.wanbang.service;
 
 import com.wanbang.common.OrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.req.OrderItemChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface OrderItemService extends IService<OrderItem> {
     Integer outbound(List<OrderItemPostReq> items,Long orderId);
 
     List<OrderItem> getDetailList(Long id);
+
+    Integer updateOrderItem(Long id, OrderItemChangeReq orderItemChangeReq);
 }

@@ -1,14 +1,14 @@
 package com.wanbang.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.wanbang.common.OrderInfo;
-import com.wanbang.common.OrderItem;
-import com.wanbang.common.Result;
+import com.wanbang.common.*;
 
 import com.wanbang.dto.OrderInfoDTO;
 import com.wanbang.req.OrderChangeReq;
+import com.wanbang.req.OrderItemChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.OrderPostReq;
 import com.wanbang.resp.OrderDetailResp;
@@ -21,6 +21,7 @@ import com.wanbang.service.OrderItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.simpleframework.xml.Order;
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,6 @@ public class OrderController {
     private OrderInfoService orderInfoService;
     @Resource
     private OrderItemService orderItemService;
-
     @Transactional(rollbackFor = Exception.class)
     @Operation(summary = "创建订单")
     @PostMapping
@@ -114,10 +114,50 @@ public class OrderController {
         BeanUtils.copyProperties(orderChangeReq,byId);
         byId.setOrderUpdateTime(new Date());
         orderInfoService.updateById(byId);
-
         return Result.success();
 
     }
+    @Transactional(rollbackFor = Exception.class)
+    @Operation(summary = "订单项变：更修改指定订单项的信息")
+    @PutMapping("/items/{id}")
+    public Result updateOrderItem(@PathVariable("id")Long id,
+                                  @RequestBody OrderItemChangeReq orderItemChangeReq){
+        OrderItem originItem = orderItemService.getById(id);
+        System.out.println("originItem = " + originItem);
+        //提供 quantity price_per_piece subtotal
+        //订单项变更： 需要冲正
+        //影响的表单:
+        // order_item 直接改quantity price_per_piece subtotal
+        Integer i = orderItemService.updateOrderItem(id,orderItemChangeReq);
+        // order_info的adjusted_amount(subtotal) order_update_time
+        //TODO 加减反了
+        Integer j = orderInfoService.updateOrderItem(originItem,orderItemChangeReq.getSubtotal());
+        // inventory_log 冲正出库记录 ? 自己手动写一个?因为没有关于inventory_log的相关联系
+        //TODO 有记录但是数量不对?
+        InventoryLog reversalLog = new InventoryLog();
+        reversalLog.setInventoryItemId(originItem.getItemId());
+        reversalLog.setQuantityChange(orderItemChangeReq.getQuantity());
+        reversalLog.setOperatorId(StpUtil.getLoginIdAsLong());
+        reversalLog.setRemark("出库的冲正记录");
+        reversalLog.setUpdateTime(new Date());
+        reversalLog.setCreateTime(new Date());
+        reversalLog.setOperationType(2);
+        InventoryItem item = inventoryItemService.getById(originItem.getItemId());
+        reversalLog.setSourceWarehouse(item.getWarehouseNum());
+        Integer k = inventoryLogService.itemReversal(reversalLog);
+        // inventory_item 的total_pieces
+        //TODO 数量加减反了
+        Integer originQuantity = originItem.getAdjustedQuantity();
+        Integer changeQuantity = orderItemChangeReq.getQuantity() - originQuantity;
+        InventoryLog reversalLog2 = new InventoryLog();
+        reversalLog2.setInventoryItemId(originItem.getItemId());
+        reversalLog2.setQuantityChange(changeQuantity);
+        reversalLog2.setSourceWarehouse(item.getWarehouseNum());
+        reversalLog2.setOperationType(2);
+        Integer i1 = inventoryItemService.itemReversal(reversalLog2);
+        System.out.println("i1 = " + i1);
+        return Result.success();
 
+    }
 
 }
