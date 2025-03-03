@@ -21,4 +21,42 @@
         id,order_no,customer_phone,operator_id,order_remark,total_amount,
         adjusted_amount,aftersale_status,order_create_time,order_update_time
     </sql>
+
+    <select id="TopSales" resultType="com.wanbang.resp.TopSoldItemsResp">
+        select
+            inv.model_number,
+            SUM(info.adjusted_quantity) as adjusted_quantity
+        from
+            order_info info
+                left join
+            inventory_item inv
+            on inv.id = info.item_id
+        group by info.item_id
+        order by SUM(info.adjusted_quantity) DESC
+            limit 5
+    </select>
+    <select id="getTopSalesTrend" resultType="com.wanbang.dto.SalesInfoDTO">
+        SELECT
+            SUM(info.adjusted_quantity) AS adjusted_quantity,
+            SUM(info.adjusted_amount) AS adjusted_amount
+        FROM
+            order_info info
+        WHERE
+            info.order_update_time LIKE CONCAT(#{date}, '%')
+    </select>
+    <select id="getTodaySales" resultType="com.wanbang.resp.TodaySaleAmountResp">
+        SELECT
+            SUM(info.adjusted_amount) AS today_sale_amount
+        FROM
+            order_info info
+        WHERE
+            info.order_update_time LIKE CONCAT(#{dateStr}, '%')
+    </select>
+    <select id="getTotalSaleAmount" resultType="com.wanbang.resp.TotalSaleAmountResp">
+        SELECT
+            SUM(info.adjusted_amount) AS total_sale_amount
+        FROM
+            order_info info
+
+    </select>
 </mapper>

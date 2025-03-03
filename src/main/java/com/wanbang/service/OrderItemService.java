@@ -2,6 +2,9 @@ package com.wanbang.service;
 
 import com.wanbang.common.OrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.req.OrderItemPostReq;
+
+import java.util.List;
 
 /**
 * @author 11965
@@ -10,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface OrderItemService extends IService<OrderItem> {
 
+    Integer outbound(List<OrderItemPostReq> items,Long orderId);
 }

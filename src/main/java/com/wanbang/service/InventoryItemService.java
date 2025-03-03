@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanbang.common.InventoryLog;
 import com.wanbang.req.InventoryItemsChangeReq;
 import com.wanbang.req.InventoryLogChangeReq;
+import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
 
@@ -30,4 +31,6 @@ public interface InventoryItemService extends IService<InventoryItem> {
 
 
     Integer itemReversal(InventoryLog req);
+
+    Integer outbound(List<OrderItemPostReq> items);
 }

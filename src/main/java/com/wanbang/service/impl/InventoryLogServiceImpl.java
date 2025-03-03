@@ -1,5 +1,6 @@
 package com.wanbang.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,6 +10,8 @@ import com.wanbang.common.InventoryLog;
 import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.mapper.InventoryItemMapper;
+import com.wanbang.mapper.OrderInfoMapper;
+import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.req.PostTransferReq;
 import com.wanbang.service.InventoryLogService;
@@ -18,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
 * @author 11965
@@ -31,6 +35,8 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
     private InventoryLogMapper inventoryLogMapper;
     @Resource
     private InventoryItemMapper inventoryItemMapper;
+
+
     @Override
     public IPage<InventoryLog> getLog(Integer page, Integer size, String startStr, String endStr, Integer operationType) {
         IPage<InventoryLog> iPage = new Page<>(page, size);
@@ -109,6 +115,28 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
         Integer j = inventoryLogMapper.insert(inventoryLog);
         System.out.println("j"+j);
         return j;
+    }
+
+    @Override
+    public Integer outbound(List<OrderItemPostReq> items) {
+        items.forEach(item -> {
+            Long itemId = item.getItemId();
+            Integer quantity = item.getQuantity();
+            Integer sourceWarehouse = item.getSourceWarehouse();
+            Long loginId = (Long) StpUtil.getLoginIdAsLong();
+            InventoryLog inventoryLog = new InventoryLog();
+            inventoryLog.setInventoryItemId(itemId);
+            inventoryLog.setOperationType(2);
+            inventoryLog.setQuantityChange(quantity);
+            inventoryLog.setOperatorId(loginId);
+            inventoryLog.setSourceWarehouse(sourceWarehouse);
+            inventoryLog.setUpdateTime(new Date());
+            inventoryLog.setCreateTime(new Date());
+            inventoryLog.setRemark("入库");
+            int i = inventoryLogMapper.insert(inventoryLog);
+            System.out.println("入库log更新 = " + i);
+        });
+        return 1;
     }
 
 

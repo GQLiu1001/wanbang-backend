@@ -10,6 +10,7 @@ import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.req.InventoryItemsChangeReq;
 import com.wanbang.req.InventoryLogChangeReq;
+import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
 import com.wanbang.service.InventoryItemService;
@@ -110,6 +111,17 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
         Integer i = inventoryItemMapper.itemReversal(operationType,inventoryItemId,sourceWarehouse,quantityChange);
         System.out.println("i = " + i);
         return i;
+    }
+
+    @Override
+    public Integer outbound(List<OrderItemPostReq> items) {
+        items.forEach(item -> {
+            Long itemId = item.getItemId();
+            Integer quantity = item.getQuantity();
+            Integer i = inventoryItemMapper.outbound(itemId,quantity);
+            System.out.println("入库item更新 = " + i);
+        });
+        return 1;
     }
 
 

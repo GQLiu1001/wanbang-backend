@@ -52,6 +52,12 @@
         </set>
         WHERE id = #{inventoryItemId}
     </update>
+    <update id="outbound">
+        UPDATE inventory_item
+        SET total_pieces = total_pieces - #{quantity},
+            update_time = NOW()
+        WHERE id = #{itemId}
+    </update>
 
 
     <select id="selectItemsList" resultType="com.wanbang.common.InventoryItem">

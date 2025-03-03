@@ -2,6 +2,9 @@ package com.wanbang.common;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -13,6 +16,7 @@ public class OrderItem {
     /**
      * 订单项ID（主键）
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

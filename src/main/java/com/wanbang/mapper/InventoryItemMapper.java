@@ -24,6 +24,8 @@ public interface InventoryItemMapper extends BaseMapper<InventoryItem> {
     Integer transfer(Long inventoryItemId, Integer targetWarehouse);
 
     Integer itemReversal(Integer operationType, Long inventoryItemId, Integer sourceWarehouse, Integer quantityChange);
+
+    Integer outbound(Long itemId, Integer quantity);
 }
 
 

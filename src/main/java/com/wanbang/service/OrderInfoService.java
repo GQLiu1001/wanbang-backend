@@ -2,6 +2,13 @@ package com.wanbang.service;
 
 import com.wanbang.common.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.req.OrderPostReq;
+import com.wanbang.resp.SalesTrendResp;
+import com.wanbang.resp.TodaySaleAmountResp;
+import com.wanbang.resp.TopSoldItemsResp;
+import com.wanbang.resp.TotalSaleAmountResp;
+
+import java.util.List;
 
 /**
 * @author 11965
@@ -9,5 +16,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-03-03 08:41:33
 */
 public interface OrderInfoService extends IService<OrderInfo> {
+    List<TopSoldItemsResp> TopSales();
 
+    List<SalesTrendResp> TopSalesTrend(Integer year, Integer month, Integer length);
+
+    TodaySaleAmountResp getTodaySales(String dateStr);
+
+    TotalSaleAmountResp getTotalSales();
+    Long outbound(OrderPostReq orderPostReq);
 }

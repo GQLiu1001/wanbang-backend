@@ -5,6 +5,7 @@ import com.wanbang.resp.SalesTrendResp;
 import com.wanbang.resp.TodaySaleAmountResp;
 import com.wanbang.resp.TopSoldItemsResp;
 import com.wanbang.resp.TotalSaleAmountResp;
+import com.wanbang.service.OrderInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
