@@ -1,19 +1,16 @@
 package com.wanbang.controller;
 
-import cn.dev33.satoken.annotation.SaIgnore;
 import com.wanbang.common.Result;
 import com.wanbang.resp.SalesTrendResp;
 import com.wanbang.resp.TodaySaleAmountResp;
 import com.wanbang.resp.TopSoldItemsResp;
 import com.wanbang.resp.TotalSaleAmountResp;
-import com.wanbang.service.OrderInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 @Tag(name = "获取卖品相关信息接口")
 @RequestMapping("/api/sales")

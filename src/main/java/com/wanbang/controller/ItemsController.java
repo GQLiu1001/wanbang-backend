@@ -1,5 +1,6 @@
 package com.wanbang.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryItem;
@@ -46,7 +47,7 @@ public class ItemsController {
         }
         return Result.fail();
     }
-
+    @SaCheckRole("admin")
     @Operation(summary = "删除库存")
     @DeleteMapping("/items/{id}")
     public Result deleteItem(@PathVariable("id") Integer id){

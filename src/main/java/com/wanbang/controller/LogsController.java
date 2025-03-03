@@ -1,5 +1,6 @@
 package com.wanbang.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.baomidou.mybatisplus.core.mapper.Mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -21,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-@SaIgnore
+
 @Tag(name = "订单记录相关接口")
 @RequestMapping("/api/logs")
 @RestController
@@ -141,5 +142,12 @@ public class  LogsController {
             //TODO 和订单相关
         }
         return Result.success();
+    }
+    @SaCheckRole("admin")
+    @Operation(summary = "删除日志")
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id) {
+        boolean b = inventoryLogService.removeById(id);
+        return Result.success(b);
     }
 }
