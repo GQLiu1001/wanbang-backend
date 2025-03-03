@@ -1,7 +1,9 @@
 package com.wanbang.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.OrderInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wanbang.dto.OrderInfoDTO;
 import com.wanbang.dto.SalesInfoDTO;
 import com.wanbang.resp.TodaySaleAmountResp;
 import com.wanbang.resp.TopSoldItemsResp;
@@ -23,7 +25,8 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
     TodaySaleAmountResp getTodaySales(String dateStr);
 
     TotalSaleAmountResp getTotalSaleAmount();
-    
+
+    IPage<OrderInfoDTO> getOrderList(IPage<OrderInfoDTO> pageParam, String startStr, String endStr, String customerPhone);
 }
 
 

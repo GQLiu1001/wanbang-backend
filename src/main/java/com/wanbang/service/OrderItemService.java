@@ -14,4 +14,6 @@ import java.util.List;
 public interface OrderItemService extends IService<OrderItem> {
 
     Integer outbound(List<OrderItemPostReq> items,Long orderId);
+
+    List<OrderItem> getDetailList(Long id);
 }

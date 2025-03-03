@@ -1,5 +1,6 @@
 package com.wanbang.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.OrderItem;
 import com.wanbang.req.OrderItemPostReq;
@@ -35,6 +36,15 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
             System.out.println("order物品插入= " + i);
         });
         return 1;
+    }
+
+    @Override
+    public List<OrderItem> getDetailList(Long id) {
+        LambdaQueryWrapper<OrderItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderItem::getOrderId,id);
+        List<OrderItem> orderItems = orderItemMapper.selectList(wrapper);
+        System.out.println("orderItems = " + orderItems);
+        return orderItems;
     }
 }
 
