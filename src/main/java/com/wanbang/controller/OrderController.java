@@ -1,12 +1,14 @@
 package com.wanbang.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.OrderInfo;
 import com.wanbang.common.OrderItem;
 import com.wanbang.common.Result;
 
 import com.wanbang.dto.OrderInfoDTO;
+import com.wanbang.req.OrderChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.OrderPostReq;
 import com.wanbang.resp.OrderDetailResp;
@@ -23,6 +25,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @SaIgnore
@@ -103,5 +106,18 @@ public class OrderController {
         resp.setItems(list);
         return Result.success(resp);
     }
+
+    @Operation(summary = "修改订单(不包括订单项的变更)")
+    @PutMapping("/{id}")
+    public Result updateOrder(@PathVariable("id")Long id,@RequestBody OrderChangeReq orderChangeReq){
+        OrderInfo byId = orderInfoService.getById(id);
+        BeanUtils.copyProperties(orderChangeReq,byId);
+        byId.setOrderUpdateTime(new Date());
+        orderInfoService.updateById(byId);
+
+        return Result.success();
+
+    }
+
 
 }

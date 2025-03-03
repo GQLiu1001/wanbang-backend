@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.Value;
 
 /**
  * 订单主表
@@ -57,11 +59,13 @@ public class OrderInfo {
     /**
      * 订单创建时间
      */
+    @TableField("order_create_time")
     private Date orderCreateTime;
 
     /**
      * 订单更新时间
      */
+    @TableField("order_update_time")
     private Date orderUpdateTime;
 
     @Override

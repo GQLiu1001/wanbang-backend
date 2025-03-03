@@ -119,7 +119,7 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
             Long itemId = item.getItemId();
             Integer quantity = item.getQuantity();
             Integer i = inventoryItemMapper.outbound(itemId,quantity);
-            System.out.println("入库item更新 = " + i);
+            System.out.println("出库item更新 = " + i);
         });
         return 1;
     }

@@ -91,7 +91,7 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
         inventoryLog.setQuantityChange(postInboundReq.getTotalPieces());
         inventoryLog.setOperatorId(operatorId);
         inventoryLog.setTargetWarehouse(postInboundReq.getWarehouseNum());
-        inventoryLog.setRemark(postInboundReq.getRemark());
+        inventoryLog.setRemark("入库"+postInboundReq.getModelNumber());
         inventoryLog.setUpdateTime(new Date());
         inventoryLog.setCreateTime(new Date());
         Integer j = inventoryLogMapper.insert(inventoryLog);
@@ -132,9 +132,9 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
             inventoryLog.setSourceWarehouse(sourceWarehouse);
             inventoryLog.setUpdateTime(new Date());
             inventoryLog.setCreateTime(new Date());
-            inventoryLog.setRemark("入库");
+            inventoryLog.setRemark("出库");
             int i = inventoryLogMapper.insert(inventoryLog);
-            System.out.println("入库log更新 = " + i);
+            System.out.println("出库log更新 = " + i);
         });
         return 1;
     }
