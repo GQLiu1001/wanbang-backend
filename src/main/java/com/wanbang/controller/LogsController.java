@@ -137,10 +137,6 @@ public class  LogsController {
             postReq.setOperatorId(req.getOperatorId());
             this.inbound(postReq);
         }
-        //出库
-        if (req.getOperationType() == 2){
-            //TODO 和订单相关
-        }
         return Result.success();
     }
     @SaCheckRole("admin")
