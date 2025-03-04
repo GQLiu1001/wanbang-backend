@@ -1,10 +1,9 @@
 package com.wanbang.controller;
 
-import cn.dev33.satoken.annotation.SaIgnore;
-import com.wanbang.common.OrderItem;
 import com.wanbang.common.Result;
 import com.wanbang.req.AftersalePostReq;
-import com.wanbang.resp.AftersaleOrderLogResp;
+
+import com.wanbang.resp.AftersaleLogDetailResp;
 import com.wanbang.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Tag(name = "售后相关接口")
 @RequestMapping("/api/aftersales")
@@ -58,8 +58,17 @@ public class AftersaleController {
 
     @Operation(summary = "获得订单的售后记录")
     @GetMapping("/order/{orderId}")
-    public Result<AftersaleOrderLogResp> order(@PathVariable Integer orderId) {
+    public Result<List<AftersaleLogDetailResp>> order(@PathVariable Integer orderId) {
+        List<AftersaleLogDetailResp> resp = orderAftersaleLogService.getAftersaleList(orderId);
+        System.out.println("resp = " + resp);
+        return Result.success(resp);
+    }
 
-        return
+    @Operation(summary = "修改售后记录状态")
+    @PutMapping("/{id}/status")
+    public Result changeStatus( @PathVariable Long id) {
+        //id是售后记录表的id
+        orderAftersaleLogService.changeStatus(id);
+        return Result.success();
     }
 }

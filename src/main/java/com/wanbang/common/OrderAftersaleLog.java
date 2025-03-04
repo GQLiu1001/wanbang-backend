@@ -3,8 +3,12 @@ package com.wanbang.common;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 /**
  * 订单售后日志表
@@ -15,6 +19,7 @@ public class OrderAftersaleLog {
     /**
      * 唯一标识
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

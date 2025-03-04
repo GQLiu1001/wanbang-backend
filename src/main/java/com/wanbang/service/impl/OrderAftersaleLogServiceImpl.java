@@ -1,17 +1,21 @@
 package com.wanbang.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.ItemAftersaleChange;
 import com.wanbang.common.OrderAftersaleLog;
 import com.wanbang.req.AftersalePostReq;
+import com.wanbang.resp.AftersaleLogDetailResp;
 import com.wanbang.service.OrderAftersaleLogService;
 import com.wanbang.mapper.OrderAftersaleLogMapper;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
 * @author 11965
@@ -36,6 +40,26 @@ public class OrderAftersaleLogServiceImpl extends ServiceImpl<OrderAftersaleLogM
         int i = orderAftersaleLogMapper.insert(orderAftersaleLog);
         System.out.println("对售后订单的每次修改 = " + i);
         return i;
+    }
+
+    @Override
+    public void changeStatus(Long id) {
+        OrderAftersaleLog orderAftersaleLog = orderAftersaleLogMapper.selectById(id);
+        orderAftersaleLog.setAftersaleStatus(2);
+        orderAftersaleLogMapper.updateById(orderAftersaleLog);
+    }
+
+    @Override
+    public List<AftersaleLogDetailResp> getAftersaleList(Integer orderId) {
+        List<AftersaleLogDetailResp> respList = new ArrayList<>();
+        List<OrderAftersaleLog> orderAftersaleLogs = orderAftersaleLogMapper.selectList(new LambdaQueryWrapper<OrderAftersaleLog>().eq(OrderAftersaleLog::getOrderId, orderId));
+        orderAftersaleLogs.forEach(orderAftersaleLog -> {
+            AftersaleLogDetailResp resp = new AftersaleLogDetailResp();
+            BeanUtils.copyProperties(orderAftersaleLog, resp);
+            respList.add(resp);
+        });
+        System.out.println("respList = " + respList);
+        return respList;
     }
 }
 
