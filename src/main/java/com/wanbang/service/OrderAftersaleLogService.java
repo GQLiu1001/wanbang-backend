@@ -1,7 +1,9 @@
 package com.wanbang.service;
 
+import com.wanbang.common.ItemAftersaleChange;
 import com.wanbang.common.OrderAftersaleLog;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.req.AftersalePostReq;
 
 /**
 * @author 11965
@@ -10,4 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface OrderAftersaleLogService extends IService<OrderAftersaleLog> {
 
+
+    Integer addLog(AftersalePostReq req, ItemAftersaleChange item);
 }

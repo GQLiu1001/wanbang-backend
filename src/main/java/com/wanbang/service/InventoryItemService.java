@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanbang.common.InventoryLog;
+import com.wanbang.common.ItemAftersaleChange;
 import com.wanbang.req.InventoryItemsChangeReq;
 import com.wanbang.req.InventoryLogChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -35,4 +37,5 @@ public interface InventoryItemService extends IService<InventoryItem> {
     Integer outbound(List<OrderItemPostReq> items);
 
 
+    Integer aftersale(ItemAftersaleChange item);
 }

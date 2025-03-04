@@ -3,6 +3,7 @@ package com.wanbang.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.InventoryLog;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.common.ItemAftersaleChange;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.req.PostTransferReq;
@@ -25,4 +26,7 @@ public interface InventoryLogService extends IService<InventoryLog> {
     Integer transfer(PostTransferReq postTransferReq);
 
     Integer outbound(List<OrderItemPostReq> items);
+
+
+    Integer aftersale(ItemAftersaleChange item);
 }

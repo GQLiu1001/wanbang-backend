@@ -1,5 +1,6 @@
 package com.wanbang.service;
 
+import com.wanbang.common.ItemAftersaleChange;
 import com.wanbang.common.OrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wanbang.req.AddOrderItemReq;
@@ -26,4 +27,6 @@ public interface OrderItemService extends IService<OrderItem> {
     Integer addSubItem(AddOrderItemReq addOrderItemReq, Long id);
 
     void check(Long id, Long itemId, String modelNumber);
+
+    Integer aftersale(ItemAftersaleChange item);
 }

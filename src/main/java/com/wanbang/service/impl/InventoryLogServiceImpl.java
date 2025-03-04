@@ -7,10 +7,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.InventoryItem;
 import com.wanbang.common.InventoryLog;
+import com.wanbang.common.ItemAftersaleChange;
+import com.wanbang.common.OrderItem;
 import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
 import com.wanbang.mapper.InventoryItemMapper;
 import com.wanbang.mapper.OrderInfoMapper;
+import com.wanbang.mapper.OrderItemMapper;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.req.PostTransferReq;
@@ -35,7 +38,8 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
     private InventoryLogMapper inventoryLogMapper;
     @Resource
     private InventoryItemMapper inventoryItemMapper;
-
+    @Resource
+    private OrderItemMapper orderItemMapper;
 
     @Override
     public IPage<InventoryLog> getLog(Integer page, Integer size, String startStr, String endStr, Integer operationType) {
@@ -139,6 +143,42 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
             System.out.println("出库log更新 = " + i);
         });
         return 1;
+    }
+
+    @Override
+    public Integer aftersale(ItemAftersaleChange item) {
+        System.out.println("售后inventoryLog的item = " + item);
+        OrderItem item1 = orderItemMapper.selectById(item.getOrderItemId());
+        InventoryItem inventoryItem = inventoryItemMapper.selectById(item1.getItemId());
+        if (item.getQuantityChange()<0){
+            //多退  订单的item数量减少 库存item增加
+            InventoryLog inventoryLog = new InventoryLog();
+            inventoryLog.setInventoryItemId(item1.getItemId());
+            inventoryLog.setUpdateTime(new Date());
+            inventoryLog.setCreateTime(new Date());
+            inventoryLog.setOperationType(1);
+            inventoryLog.setQuantityChange(-item.getQuantityChange());
+            inventoryLog.setRemark("售后 多退 订单的item数量减少 库存item增加");
+            inventoryLog.setOperatorId(StpUtil.getLoginIdAsLong());
+            inventoryLog.setSourceWarehouse(inventoryItem.getWarehouseNum());
+            int i = inventoryLogMapper.insert(inventoryLog);
+            System.out.println("i = " + i);
+            return i;
+        }else {
+            //少补
+            InventoryLog inventoryLog = new InventoryLog();
+            inventoryLog.setInventoryItemId(item1.getItemId());
+            inventoryLog.setUpdateTime(new Date());
+            inventoryLog.setCreateTime(new Date());
+            inventoryLog.setOperationType(1);
+            inventoryLog.setQuantityChange(-item.getQuantityChange());
+            inventoryLog.setRemark("售后 少补 订单的item数量增加 库存item减少");
+            inventoryLog.setOperatorId(StpUtil.getLoginIdAsLong());
+            inventoryLog.setSourceWarehouse(inventoryItem.getWarehouseNum());
+            int i = inventoryLogMapper.insert(inventoryLog);
+            System.out.println("i = " + i);
+            return i;
+        }
     }
 
 

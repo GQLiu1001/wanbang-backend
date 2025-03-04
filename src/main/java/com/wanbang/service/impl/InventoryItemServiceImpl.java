@@ -4,11 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wanbang.common.InventoryItem;
-import com.wanbang.common.InventoryLog;
-import com.wanbang.common.OrderInfo;
+import com.wanbang.common.*;
 import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
+import com.wanbang.mapper.OrderItemMapper;
 import com.wanbang.req.InventoryItemsChangeReq;
 import com.wanbang.req.InventoryLogChangeReq;
 import com.wanbang.req.OrderItemPostReq;
@@ -18,9 +17,11 @@ import com.wanbang.service.InventoryItemService;
 import com.wanbang.mapper.InventoryItemMapper;
 import com.wanbang.vo.UserInfoVO;
 import jakarta.annotation.Resource;
+import org.simpleframework.xml.Order;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +36,8 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
     implements InventoryItemService{
     @Resource
     private InventoryItemMapper inventoryItemMapper;
-
+    @Resource
+    private OrderItemMapper orderItemMapper;
     @Override
     public IPage<InventoryItem> getItems(Integer page, Integer size,Integer category,Integer surface) {
         IPage<InventoryItem> pageParam = new Page<>(page, size);
@@ -126,7 +128,17 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
         return 1;
     }
 
-
+    @Override
+    public Integer aftersale(ItemAftersaleChange item) {
+        System.out.println("售后inventoryItem的item = " + item);
+        OrderItem orderItem = orderItemMapper.selectById(item.getOrderItemId());
+        InventoryItem inventoryItem = inventoryItemMapper.selectById(orderItem.getItemId());
+        inventoryItem.setUpdateTime(new Date());
+        inventoryItem.setTotalPieces(inventoryItem.getTotalPieces() - item.getQuantityChange());
+        int i = inventoryItemMapper.updateById(inventoryItem);
+        System.out.println("售后每个item对库存修改= " + i);
+        return i;
+    }
 
 
 }

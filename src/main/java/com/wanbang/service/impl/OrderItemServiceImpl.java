@@ -3,6 +3,7 @@ package com.wanbang.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wanbang.common.ItemAftersaleChange;
 import com.wanbang.common.OrderItem;
 import com.wanbang.enums.ResultCode;
 import com.wanbang.exception.WanbangException;
@@ -97,6 +98,18 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
         if (item != null) {
             throw new WanbangException(ResultCode.FAIL);
         }
+    }
+
+    @Override
+    public Integer aftersale(ItemAftersaleChange item) {
+        Long itemId =  item.getOrderItemId();
+        OrderItem orderItem = orderItemMapper.selectById(itemId);
+        orderItem.setAdjustedQuantity(orderItem.getAdjustedQuantity() + item.getQuantityChange());
+        orderItem.setSubtotal(orderItem.getSubtotal().add(item.getAmountChange()));
+        orderItem.setUpdateTime(new Date());
+        int i = orderItemMapper.updateById(orderItem);
+        System.out.println("售后子订单对orderItem的每次修改 = " + i);
+        return i;
     }
 }
 

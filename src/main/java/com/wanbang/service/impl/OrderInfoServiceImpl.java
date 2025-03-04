@@ -155,6 +155,20 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         System.out.println("i = " + i);
         return i;
     }
+
+    @Override
+    public Integer aftersale(BigDecimal amountChange,Long orderId) {
+        OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
+        Integer aftersaleStatus = orderInfo.getAftersaleStatus();
+        if (aftersaleStatus == null) {
+            aftersaleStatus = 1;
+            orderInfo.setAftersaleStatus(aftersaleStatus);
+        }
+        orderInfo.setAdjustedAmount(orderInfo.getAdjustedAmount().add(amountChange));
+        int i = orderInfoMapper.updateById(orderInfo);
+        System.out.println("售后子订单对orderInfo的AdjustedAmount每次修改 = " + i);
+        return i;
+    }
 }
 
 
