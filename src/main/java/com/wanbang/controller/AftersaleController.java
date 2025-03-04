@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import com.wanbang.common.OrderItem;
 import com.wanbang.common.Result;
 import com.wanbang.req.AftersalePostReq;
+import com.wanbang.resp.AftersaleOrderLogResp;
 import com.wanbang.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,5 +54,12 @@ public class AftersaleController {
             System.out.println("l = " + l);
         });
         return Result.success();
+    }
+
+    @Operation(summary = "获得订单的售后记录")
+    @GetMapping("/order/{orderId}")
+    public Result<AftersaleOrderLogResp> order(@PathVariable Integer orderId) {
+
+        return
     }
 }

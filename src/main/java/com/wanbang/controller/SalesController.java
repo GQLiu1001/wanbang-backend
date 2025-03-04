@@ -23,7 +23,7 @@ public class SalesController {
     private OrderInfoService orderInfoService;
 
     @Operation(summary = "获取最热门的五件卖品")
-    @GetMapping
+    @GetMapping("/top-products")
     public Result<List<TopSoldItemsResp>> TopSales() {
         List<TopSoldItemsResp> itemsResp = orderInfoService.TopSales();
         if (itemsResp != null) {
@@ -65,6 +65,7 @@ public class SalesController {
         String dateStr = year + "-" + monthStr + "-" + dayStr;
         TodaySaleAmountResp resp = orderInfoService.getTodaySales(dateStr);
         if (resp != null) {
+            System.out.println("resp = " + resp);
             return Result.success(resp);
         }
         return Result.fail();
@@ -75,6 +76,7 @@ public class SalesController {
     public Result<TotalSaleAmountResp> getTotalSaleAmount() {
         TotalSaleAmountResp resp = orderInfoService.getTotalSales();
         if (resp != null) {
+            System.out.println("resp = " + resp);
             return Result.success(resp);
         }
         return Result.fail();

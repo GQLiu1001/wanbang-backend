@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -41,16 +42,19 @@ public class SysUser {
     /**
      * 删除标记
      */
+    @JsonProperty("is_deleted")
     private Integer isDeleted;
 
     /**
-     * 
+     *
      */
+    @JsonProperty("create_time")
     private Date createTime;
 
     /**
-     * 
+     *
      */
+    @JsonProperty("update_time")
     private Date updateTime;
 
 

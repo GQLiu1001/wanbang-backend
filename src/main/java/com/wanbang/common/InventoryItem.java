@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -22,11 +23,13 @@ public class InventoryItem {
     /**
      * 产品型号
      */
+    @JsonProperty("model_number")
     private String modelNumber;
 
     /**
      * 制造厂商
      */
+
     private String manufacturer;
 
     /**
@@ -47,21 +50,25 @@ public class InventoryItem {
     /**
      * 仓库编码
      */
+    @JsonProperty("warehouse_num")
     private Integer warehouseNum;
 
     /**
      * 总片数
      */
+    @JsonProperty("total_pieces")
     private Integer totalPieces;
 
     /**
      * 单片价格（单位：元）
      */
+    @JsonProperty("price_per_piece")
     private BigDecimal pricePerPiece;
 
     /**
      * 每箱片数
      */
+    @JsonProperty("pieces_per_box")
     private Integer piecesPerBox;
 
     /**
@@ -72,11 +79,13 @@ public class InventoryItem {
     /**
      * 
      */
+    @JsonProperty("create_time")
     private Date createTime;
 
     /**
      * 
      */
+    @JsonProperty("update_time")
     private Date updateTime;
 
 }

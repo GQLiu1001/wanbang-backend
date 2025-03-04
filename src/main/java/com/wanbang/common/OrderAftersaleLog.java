@@ -2,6 +2,8 @@ package com.wanbang.common;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -18,46 +20,55 @@ public class OrderAftersaleLog {
     /**
      * 订单ID
      */
+    @JsonProperty("order_id")
     private Long orderId;
 
     /**
      * 订单项ID
      */
+    @JsonProperty("order_item_id")
     private Long orderItemId;
 
     /**
      * 售后类型（1=买多退货退款 2=买少补货补款）
      */
+    @JsonProperty("aftersale_type")
     private Integer aftersaleType;
 
     /**
      * 售后状态（1=新建 2=已解决）
      */
+    @JsonProperty("aftersale_status")
     private Integer aftersaleStatus;
 
     /**
      * 数量变化（负数表示退货，正数表示补货）
      */
+    @JsonProperty("quantity_change")
     private Integer quantityChange;
 
     /**
      * 金额变化（负数表示退款，正数表示补款）
      */
+    @JsonProperty("amount_change")
     private BigDecimal amountChange;
 
     /**
      * 处理结果说明
      */
+    @JsonProperty("resolution_result")
     private String resolutionResult;
 
     /**
      * 售后处理人ID
      */
+    @JsonProperty("aftersale_operator")
     private Long aftersaleOperator;
 
     /**
      * 创建时间
      */
+    @JsonProperty("creat_time")
     private Date createTime;
 
     @Override

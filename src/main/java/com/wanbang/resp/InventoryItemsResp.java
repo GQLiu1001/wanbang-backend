@@ -1,5 +1,6 @@
 package com.wanbang.resp;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wanbang.common.InventoryItem;
 import com.wanbang.common.InventoryLog;
 import lombok.Data;
@@ -11,5 +12,6 @@ public class InventoryItemsResp {
     private Long total;
     private Long page;
     private Long size;
+
     private List<InventoryItem> items;
 }

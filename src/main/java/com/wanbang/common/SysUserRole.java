@@ -1,5 +1,6 @@
 package com.wanbang.common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -11,11 +12,13 @@ public class SysUserRole {
     /**
      * 用户ID
      */
+    @JsonProperty("user_id")
     private Long userId;
 
     /**
      * 角色ID
      */
+    @JsonProperty("role_id")
     private Long roleId;
 
 

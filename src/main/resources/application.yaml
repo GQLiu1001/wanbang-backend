@@ -22,8 +22,12 @@ sa-token:
   token-style: uuid
   is-log: true
 mybatis-plus:
-  global-config:
-    db-config:
-      id-type: AUTO
+  configuration:
+    map-underscore-to-camel-case: true
+#  global-config:
+#    db-config:
+#      id-type: AUTO
 springdoc:
   packages-to-scan: com.wanbang.controller
+
+

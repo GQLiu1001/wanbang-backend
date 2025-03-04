@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -22,16 +23,19 @@ public class OrderItem {
     /**
      * 订单ID（外键关联order_info表）
      */
+    @JsonProperty("order_id")
     private Long orderId;
 
     /**
      * 库存商品ID（外键关联inventory_item表）
      */
+    @JsonProperty("item_id")
     private Long itemId;
 
     /**
      * 产品型号
      */
+    @JsonProperty("model_number")
     private String modelNumber;
 
     /**
@@ -42,6 +46,7 @@ public class OrderItem {
     /**
      * 单价
      */
+    @JsonProperty("price_per_piece")
     private BigDecimal pricePerPiece;
 
     /**
@@ -52,16 +57,19 @@ public class OrderItem {
     /**
      * 调整后的数量
      */
+    @JsonProperty("adjusted_quantity")
     private Integer adjustedQuantity;
 
     /**
      * 创建时间
      */
+    @JsonProperty("create_time")
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @JsonProperty("update_time")
     private Date updateTime;
 
     @Override

@@ -6,6 +6,7 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Value;
 
@@ -24,36 +25,43 @@ public class OrderInfo {
     /**
      * 订单编号（业务编号，雪花算法生成）
      */
+    @JsonProperty("order_no")
     private String orderNo;
 
     /**
      * 客户手机号
      */
+    @JsonProperty("customer_phone")
     private String customerPhone;
 
     /**
      * 操作人ID
      */
+    @JsonProperty("operator_id")
     private Long operatorId;
 
     /**
      * 订单备注
      */
+    @JsonProperty("order_remark")
     private String orderRemark;
 
     /**
      * 原始订单总金额
      */
+    @JsonProperty("total_amount")
     private BigDecimal totalAmount;
 
     /**
      * 调整后的总金额（多退少补后）
      */
+    @JsonProperty("adjusted_amount")
     private BigDecimal adjustedAmount;
 
     /**
      * 售后状态（1=新建 2=已解决）
      */
+    @JsonProperty("aftersale_status")
     private Integer aftersaleStatus;
 
     /**
