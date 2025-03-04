@@ -33,4 +33,6 @@ public interface InventoryItemService extends IService<InventoryItem> {
     Integer itemReversal(InventoryLog req);
 
     Integer outbound(List<OrderItemPostReq> items);
+
+
 }

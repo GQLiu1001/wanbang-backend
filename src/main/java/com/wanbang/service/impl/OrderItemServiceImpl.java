@@ -1,8 +1,12 @@
 package com.wanbang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanbang.common.OrderItem;
+import com.wanbang.enums.ResultCode;
+import com.wanbang.exception.WanbangException;
+import com.wanbang.req.AddOrderItemReq;
 import com.wanbang.req.OrderItemChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.service.OrderItemService;
@@ -60,6 +64,39 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
         int i = orderItemMapper.updateById(orderItem);
         System.out.println("i = " + i);
         return i;
+    }
+
+    @Override
+    public Integer removeSubItem(Long id) {
+        QueryWrapper<OrderItem> wrapper = new QueryWrapper<>();
+        wrapper.eq("order_id",id);
+        int delete = orderItemMapper.delete(wrapper);
+        System.out.println("delete = " + delete);
+        return delete;
+    }
+
+    @Override
+    public Integer addSubItem(AddOrderItemReq addOrderItemReq, Long id) {
+        OrderItem orderItem = new OrderItem();
+        BeanUtils.copyProperties(addOrderItemReq,orderItem);
+        orderItem.setAdjustedQuantity(addOrderItemReq.getQuantity());
+        orderItem.setCreateTime(new Date());
+        orderItem.setUpdateTime(new Date());
+        orderItem.setOrderId(id);
+        int i = orderItemMapper.insert(orderItem);
+        System.out.println("i = " + i);
+        return i;
+    }
+
+    @Override
+    public void check(Long id, Long itemId, String modelNumber) {
+        LambdaQueryWrapper<OrderItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderItem::getOrderId,id);
+        wrapper.eq(OrderItem::getItemId,itemId);
+        OrderItem item = orderItemMapper.selectOne(wrapper);
+        if (item != null) {
+            throw new WanbangException(ResultCode.FAIL);
+        }
     }
 }
 

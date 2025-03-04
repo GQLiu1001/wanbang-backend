@@ -145,6 +145,16 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
         return i;
     }
+
+    @Override
+    public Integer addSubInfo(Long id, BigDecimal subtotal) {
+        OrderInfo orderInfo = orderInfoMapper.selectById(id);
+        orderInfo.setAdjustedAmount(orderInfo.getAdjustedAmount().add(subtotal));
+        orderInfo.setOrderUpdateTime(new Date());
+        int i = orderInfoMapper.updateById(orderInfo);
+        System.out.println("i = " + i);
+        return i;
+    }
 }
 
 

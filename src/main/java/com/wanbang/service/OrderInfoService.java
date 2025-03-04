@@ -35,4 +35,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
 
     Integer updateOrderItem(OrderItem originItem, BigDecimal subtotal);
+
+    Integer addSubInfo(Long id, BigDecimal subtotal);
 }

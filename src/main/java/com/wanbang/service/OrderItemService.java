@@ -2,6 +2,7 @@ package com.wanbang.service;
 
 import com.wanbang.common.OrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wanbang.req.AddOrderItemReq;
 import com.wanbang.req.OrderItemChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 
@@ -19,4 +20,10 @@ public interface OrderItemService extends IService<OrderItem> {
     List<OrderItem> getDetailList(Long id);
 
     Integer updateOrderItem(Long id, OrderItemChangeReq orderItemChangeReq);
+
+    Integer removeSubItem(Long id);
+
+    Integer addSubItem(AddOrderItemReq addOrderItemReq, Long id);
+
+    void check(Long id, Long itemId, String modelNumber);
 }

@@ -1,5 +1,6 @@
 package com.wanbang.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -7,10 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wanbang.common.*;
 
 import com.wanbang.dto.OrderInfoDTO;
-import com.wanbang.req.OrderChangeReq;
-import com.wanbang.req.OrderItemChangeReq;
-import com.wanbang.req.OrderItemPostReq;
-import com.wanbang.req.OrderPostReq;
+import com.wanbang.req.*;
 import com.wanbang.resp.OrderDetailResp;
 import com.wanbang.resp.OrderListResp;
 import com.wanbang.service.InventoryItemService;
@@ -26,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -119,8 +118,8 @@ public class OrderController {
     }
     @Transactional(rollbackFor = Exception.class)
     @Operation(summary = "订单项变：更修改指定订单项的信息")
-    @PutMapping("/items/{id}")
-    public Result updateOrderItem(@PathVariable("id")Long id,
+    @PutMapping("/items/{itemId}")
+    public Result updateOrderItem(@PathVariable("itemId")Long id,
                                   @RequestBody OrderItemChangeReq orderItemChangeReq){
         OrderItem originItem = orderItemService.getById(id);
         System.out.println("originItem = " + originItem);
@@ -166,5 +165,47 @@ public class OrderController {
         return Result.success();
 
     }
+    @Transactional(rollbackFor = Exception.class)
+    @Operation(summary = "添加订单项")
+    @PostMapping("/{orderId}/items")
+    public Result addOrderItem(@PathVariable("orderId")Long id,@RequestBody AddOrderItemReq addOrderItemReq){
+        orderItemService.check(id,addOrderItemReq.getItemId(),addOrderItemReq.getModelNumber());
+        //根据orderId插入一个子单 需要修改order的subtotal 需要添加一条记录到item
+        Integer i = orderItemService.addSubItem(addOrderItemReq,id);
+        //info表单改金钱
+        Integer j =orderInfoService.addSubInfo(id,addOrderItemReq.getSubtotal());
+        //inventoryInfo加出库
+        InventoryItem item = inventoryItemService.getById(addOrderItemReq.getItemId());
+        List<OrderItemPostReq> list = new ArrayList<>();
+        OrderItemPostReq orderItemPostReq = new OrderItemPostReq();
+        orderItemPostReq.setItemId(addOrderItemReq.getItemId());
+        orderItemPostReq.setQuantity(addOrderItemReq.getQuantity());
+        orderItemPostReq.setSourceWarehouse(item.getWarehouseNum());
+        list.add(orderItemPostReq);
+        Integer outbound = inventoryLogService.outbound(list);
+        //inventoryItem减去数量
+        Integer outbound1 = inventoryItemService.outbound(list);
+        return Result.success();
+    }
+    @Transactional(rollbackFor = Exception.class)
+    @Operation(summary = "删除订单母单")
+    @SaCheckRole("admin")
+    @DeleteMapping("/{orderId}")
+    public Result deleteOrder(@PathVariable("orderId")Long id){
+        Integer i = orderItemService.removeSubItem(id);
+        //删除母单信息 and 相关子单
+        boolean b = orderInfoService.removeById(id);
+        return Result.success();
+    }
+
+    @Operation(summary = "删除订单子单")
+    @SaCheckRole("admin")
+    @DeleteMapping("/items/{itemId}")
+    public Result deleteOrderItem(@PathVariable("itemId") Long id){
+        //删除单个子单
+        boolean b = orderItemService.removeById(id);
+        return Result.success();
+    }
+
 
 }
