@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
-@SaIgnore
 @Tag(name = "售后相关接口")
 @RequestMapping("/api/aftersales")
 @RestController
