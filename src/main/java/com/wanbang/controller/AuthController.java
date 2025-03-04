@@ -39,7 +39,7 @@ public class AuthController {
         String username = registerReq.getUsername();
         String password = registerReq.getPassword();
         String phone = registerReq.getPhone();
-        Integer i = sysUserService.registry(username,password,phone);
+        Integer i = sysUserService.registry(username, password, phone);
         if (i > 0) {
             return Result.success();
         }
@@ -52,10 +52,10 @@ public class AuthController {
         String username = forgetPasswordReq.getUsername();
         String phone = forgetPasswordReq.getPhone();
         String password = forgetPasswordReq.getNewPassword();
-        Integer i = sysUserService.changePassword(username,phone,password);
+        Integer i = sysUserService.changePassword(username, phone, password);
         if (i > 0) {
             return Result.success();
-        }else {
+        } else {
             return Result.fail();
         }
     }

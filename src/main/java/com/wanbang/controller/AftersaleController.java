@@ -7,21 +7,20 @@ import com.wanbang.service.OrderAftersaleLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @SaIgnore
 @Tag(name = "售后相关接口")
 @RequestMapping("/api/aftersales")
 @RestController
+@CrossOrigin
 public class AftersaleController {
     @Resource
     OrderAftersaleLogService orderAftersaleLogService;
 
     @Operation(summary = "创建售后")
     @PostMapping
-    public Result aftersale(@RequestBody AftersalePostReq req){
+    public Result aftersale(@RequestBody AftersalePostReq req) {
         //  "order_id": 1,
         //  "aftersale_type": 1,
         //  "aftersale_status": 1,

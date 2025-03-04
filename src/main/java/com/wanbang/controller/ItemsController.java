@@ -13,21 +13,23 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @Tag(name = "库存相关接口")
 @RequestMapping("/api/inventory")
 @RestController
 public class ItemsController {
     @Resource
     private InventoryItemService inventoryItemService;
+
     @Operation(summary = "查询库存列表")
     @GetMapping("/items")
     public Result<InventoryItemsResp> getItems(
-            @RequestParam(value = "page",defaultValue = "1") Integer page,
-            @RequestParam(value = "size",defaultValue = "10") Integer size,
-            @RequestParam(value = "category",required = false) Integer category ,
-            @RequestParam(value = "surface",required = false) Integer surface
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "category", required = false) Integer category,
+            @RequestParam(value = "surface", required = false) Integer surface
     ) {
-        IPage<InventoryItem> resp = inventoryItemService.getItems(page,size,category,surface);
+        IPage<InventoryItem> resp = inventoryItemService.getItems(page, size, category, surface);
         System.out.println(resp);
         InventoryItemsResp inventoryItemsResp = new InventoryItemsResp();
         inventoryItemsResp.setTotal(resp.getTotal());
@@ -37,22 +39,24 @@ public class ItemsController {
         System.out.println(inventoryItemsResp);
         return Result.success(inventoryItemsResp);
     }
+
     @Operation(summary = "修改库存")
     @PutMapping("/items/{id}")
-    public Result changeItem(@PathVariable("id") Integer id ,@RequestBody InventoryItemsChangeReq req){
+    public Result changeItem(@PathVariable("id") Integer id, @RequestBody InventoryItemsChangeReq req) {
         System.out.println(req);
-        Integer i = inventoryItemService.changeItems(id,req);
-        if (i>0){
+        Integer i = inventoryItemService.changeItems(id, req);
+        if (i > 0) {
             return Result.success();
         }
         return Result.fail();
     }
+
     @SaCheckRole("admin")
     @Operation(summary = "删除库存")
     @DeleteMapping("/items/{id}")
-    public Result deleteItem(@PathVariable("id") Integer id){
-        Integer i =inventoryItemService.deleteById(id);
-        if (i>0){
+    public Result deleteItem(@PathVariable("id") Integer id) {
+        Integer i = inventoryItemService.deleteById(id);
+        if (i > 0) {
             return Result.success();
         }
         return Result.fail();

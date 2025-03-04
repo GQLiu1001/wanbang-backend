@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@SaIgnore
+@CrossOrigin
 @Tag(name = "订单相关接口")
 @RequestMapping("/api/orders")
 @RestController
@@ -41,6 +41,7 @@ public class OrderController {
     private OrderInfoService orderInfoService;
     @Resource
     private OrderItemService orderItemService;
+
     @Transactional(rollbackFor = Exception.class)
     @Operation(summary = "创建订单")
     @PostMapping
@@ -58,31 +59,31 @@ public class OrderController {
         Integer i = inventoryLogService.outbound(orderPostReq.getItems());
         Integer j = inventoryItemService.outbound(orderPostReq.getItems());
         Long orderId = orderInfoService.outbound(orderPostReq);
-        Integer l = orderItemService.outbound(orderPostReq.getItems(),orderId);
+        Integer l = orderItemService.outbound(orderPostReq.getItems(), orderId);
         return Result.success();
     }
 
     @Operation(summary = "查询订单列表")
     @GetMapping
     public Result<OrderListResp> getAllOrders(
-            @RequestParam(value = "page",defaultValue = "1") Integer page,@RequestParam(value = "size",defaultValue = "10") Integer size,
-            @RequestParam(value = "start_time",required = false) String startTime,@RequestParam(value = "end_time",required = false) String endTime,
-            @RequestParam(value = "customer_phone",required = false) String customerPhone
+            @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "start_time", required = false) String startTime, @RequestParam(value = "end_time", required = false) String endTime,
+            @RequestParam(value = "customer_phone", required = false) String customerPhone
     ) {
         String startStr = null;
         String endStr = null;
-        if (startTime != null ) {
+        if (startTime != null) {
 
             startStr = startTime.substring(0, 10);
             System.out.println("startStr = " + startStr);
         }
-        if (endTime != null ) {
+        if (endTime != null) {
 
-             endStr = endTime.substring(0, 10);
+            endStr = endTime.substring(0, 10);
             System.out.println("endStr = " + endStr);
         }
 
-        IPage<OrderInfoDTO> resp= orderInfoService.getOrderList(page,size,startStr,endStr,customerPhone);
+        IPage<OrderInfoDTO> resp = orderInfoService.getOrderList(page, size, startStr, endStr, customerPhone);
         OrderListResp orderListResp = new OrderListResp();
         orderListResp.setItems(resp.getRecords());
         orderListResp.setTotal(resp.getTotal());
@@ -95,11 +96,11 @@ public class OrderController {
 
     @Operation(summary = "查询订单详细")
     @GetMapping("/{id}")
-    public Result<OrderDetailResp> orderDetail(@PathVariable("id")Long id){
+    public Result<OrderDetailResp> orderDetail(@PathVariable("id") Long id) {
         OrderDetailResp resp = new OrderDetailResp();
         OrderInfo byId = orderInfoService.getById(id);
         System.out.println("byId = " + byId);
-        BeanUtils.copyProperties(byId,resp);
+        BeanUtils.copyProperties(byId, resp);
         List<OrderItem> list = orderItemService.getDetailList(id);
         System.out.println("list = " + list);
         resp.setItems(list);
@@ -108,28 +109,29 @@ public class OrderController {
 
     @Operation(summary = "修改订单(不包括订单项的变更)")
     @PutMapping("/{id}")
-    public Result updateOrder(@PathVariable("id")Long id,@RequestBody OrderChangeReq orderChangeReq){
+    public Result updateOrder(@PathVariable("id") Long id, @RequestBody OrderChangeReq orderChangeReq) {
         OrderInfo byId = orderInfoService.getById(id);
-        BeanUtils.copyProperties(orderChangeReq,byId);
+        BeanUtils.copyProperties(orderChangeReq, byId);
         byId.setOrderUpdateTime(new Date());
         orderInfoService.updateById(byId);
         return Result.success();
 
     }
+
     @Transactional(rollbackFor = Exception.class)
     @Operation(summary = "订单项变：更修改指定订单项的信息")
     @PutMapping("/items/{itemId}")
-    public Result updateOrderItem(@PathVariable("itemId")Long id,
-                                  @RequestBody OrderItemChangeReq orderItemChangeReq){
+    public Result updateOrderItem(@PathVariable("itemId") Long id,
+                                  @RequestBody OrderItemChangeReq orderItemChangeReq) {
         OrderItem originItem = orderItemService.getById(id);
         System.out.println("originItem = " + originItem);
         //提供 quantity price_per_piece subtotal
         //订单项变更： 需要冲正
         //影响的表单:
         // order_item 直接改quantity price_per_piece subtotal
-        Integer i = orderItemService.updateOrderItem(id,orderItemChangeReq);
+        Integer i = orderItemService.updateOrderItem(id, orderItemChangeReq);
         // order_info的adjusted_amount(subtotal) order_update_time
-        Integer j = orderInfoService.updateOrderItem(originItem,orderItemChangeReq.getSubtotal());
+        Integer j = orderInfoService.updateOrderItem(originItem, orderItemChangeReq.getSubtotal());
         // inventory_item 的total_pieces
         //上一次的数量
         InventoryLog reversalLog = new InventoryLog();
@@ -165,15 +167,16 @@ public class OrderController {
         return Result.success();
 
     }
+
     @Transactional(rollbackFor = Exception.class)
     @Operation(summary = "添加订单项")
     @PostMapping("/{orderId}/items")
-    public Result addOrderItem(@PathVariable("orderId")Long id,@RequestBody AddOrderItemReq addOrderItemReq){
-        orderItemService.check(id,addOrderItemReq.getItemId(),addOrderItemReq.getModelNumber());
+    public Result addOrderItem(@PathVariable("orderId") Long id, @RequestBody AddOrderItemReq addOrderItemReq) {
+        orderItemService.check(id, addOrderItemReq.getItemId(), addOrderItemReq.getModelNumber());
         //根据orderId插入一个子单 需要修改order的subtotal 需要添加一条记录到item
-        Integer i = orderItemService.addSubItem(addOrderItemReq,id);
+        Integer i = orderItemService.addSubItem(addOrderItemReq, id);
         //info表单改金钱
-        Integer j =orderInfoService.addSubInfo(id,addOrderItemReq.getSubtotal());
+        Integer j = orderInfoService.addSubInfo(id, addOrderItemReq.getSubtotal());
         //inventoryInfo加出库
         InventoryItem item = inventoryItemService.getById(addOrderItemReq.getItemId());
         List<OrderItemPostReq> list = new ArrayList<>();
@@ -187,11 +190,12 @@ public class OrderController {
         Integer outbound1 = inventoryItemService.outbound(list);
         return Result.success();
     }
+
     @Transactional(rollbackFor = Exception.class)
     @Operation(summary = "删除订单母单")
     @SaCheckRole("admin")
     @DeleteMapping("/{orderId}")
-    public Result deleteOrder(@PathVariable("orderId")Long id){
+    public Result deleteOrder(@PathVariable("orderId") Long id) {
         Integer i = orderItemService.removeSubItem(id);
         //删除母单信息 and 相关子单
         boolean b = orderInfoService.removeById(id);
@@ -201,7 +205,7 @@ public class OrderController {
     @Operation(summary = "删除订单子单")
     @SaCheckRole("admin")
     @DeleteMapping("/items/{itemId}")
-    public Result deleteOrderItem(@PathVariable("itemId") Long id){
+    public Result deleteOrderItem(@PathVariable("itemId") Long id) {
         //删除单个子单
         boolean b = orderItemService.removeById(id);
         return Result.success();

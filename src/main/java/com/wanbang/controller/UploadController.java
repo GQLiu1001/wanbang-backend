@@ -10,6 +10,7 @@ import io.minio.errors.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Tag(name = "上传接口")
+@CrossOrigin
 @RestController
 public class UploadController {
     @Resource
