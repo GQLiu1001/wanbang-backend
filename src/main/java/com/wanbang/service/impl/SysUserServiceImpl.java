@@ -88,9 +88,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         }
         System.out.println(sysUser.getPassword());
         System.out.println(password);
-        if (password.equals(sysUser.getPassword())) {
-            throw new WanbangException(400,"不能与原密码相同");
-        }
         sysUser.setPassword(password);
         int i = sysUserMapper.updateById(sysUser);
         return i;

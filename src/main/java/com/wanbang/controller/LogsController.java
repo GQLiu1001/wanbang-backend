@@ -107,7 +107,7 @@ public class LogsController {
         }
         Integer j = inventoryLogService.transfer(postTransferReq);
         if (j <= 0) {
-            return Result.fail(j);
+            return Result.fail();
         }
         return Result.success();
     }
