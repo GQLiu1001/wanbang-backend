@@ -76,6 +76,8 @@ public class OrderAftersaleLog {
     @JsonProperty("creat_time")
     private Date createTime;
 
+    @JsonProperty("update_time")
+    private Date updateTime;
     @Override
     public boolean equals(Object that) {
         if (this == that) {

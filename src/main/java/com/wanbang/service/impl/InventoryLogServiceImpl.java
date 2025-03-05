@@ -117,6 +117,9 @@ public class InventoryLogServiceImpl extends ServiceImpl<InventoryLogMapper, Inv
         inventoryLog.setCreateTime(new Date());
         inventoryLog.setQuantityChange(inventoryItem.getTotalPieces());
         inventoryLog.setOperationType(3);
+        if (postTransferReq.getRemark() == null || postTransferReq.getRemark().isEmpty()) {
+            inventoryLog.setRemark("调库物品id"+inventoryItem.getId());
+        }
         System.out.println("inventoryLog = " + inventoryLog);
         Integer j = inventoryLogMapper.insert(inventoryLog);
         System.out.println("j"+j);

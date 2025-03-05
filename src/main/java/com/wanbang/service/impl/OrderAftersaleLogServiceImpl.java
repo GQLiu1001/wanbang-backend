@@ -35,6 +35,7 @@ public class OrderAftersaleLogServiceImpl extends ServiceImpl<OrderAftersaleLogM
         orderAftersaleLog.setOrderItemId(item.getOrderItemId());
         BeanUtils.copyProperties(item, orderAftersaleLog);
         orderAftersaleLog.setCreateTime(new Date());
+        orderAftersaleLog.setUpdateTime(new Date());
         orderAftersaleLog.setAftersaleOperator(StpUtil.getLoginIdAsLong());
         System.out.println("orderAftersaleLog = " + orderAftersaleLog);
         int i = orderAftersaleLogMapper.insert(orderAftersaleLog);
@@ -46,6 +47,7 @@ public class OrderAftersaleLogServiceImpl extends ServiceImpl<OrderAftersaleLogM
     public void changeStatus(Long id) {
         OrderAftersaleLog orderAftersaleLog = orderAftersaleLogMapper.selectById(id);
         orderAftersaleLog.setAftersaleStatus(2);
+        orderAftersaleLog.setUpdateTime(new Date());
         orderAftersaleLogMapper.updateById(orderAftersaleLog);
     }
 

@@ -69,7 +69,7 @@ public class SalesController {
             System.out.println("resp = " + resp);
             return Result.success(resp);
         }
-        return Result.fail();
+        return Result.success();
     }
 
     @Operation(summary = "获取总销售额")
@@ -80,6 +80,6 @@ public class SalesController {
             System.out.println("resp = " + resp);
             return Result.success(resp);
         }
-        return Result.fail();
+        return Result.success();
     }
 }

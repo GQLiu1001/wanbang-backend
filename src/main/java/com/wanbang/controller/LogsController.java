@@ -64,6 +64,9 @@ public class LogsController {
     @Operation(summary = "创建入库记录")
     @PostMapping("/inbound")
     public Result inbound(@RequestBody PostInboundReq postInboundReq) {
+        if (postInboundReq.getCategory() >= 3) {
+            postInboundReq.setPiecesPerBox(1);
+        }
         //方法主要有两个作用 1.入库更新items 如果没有就新insert一个
         //                2.创建一个入库logs
         //postInboundReq

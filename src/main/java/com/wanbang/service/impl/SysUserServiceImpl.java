@@ -1,5 +1,6 @@
 package com.wanbang.service.impl;
 
+import cn.dev33.satoken.secure.SaSecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -74,6 +75,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
         sysUserRole.setUserId(sysUser.getId());
         sysUserRole.setRoleId(2L);
         int j = sysUserRoleMapper.insert(sysUserRole);
+        System.out.println("sysUserRole表更新了= " + j +"行");
         return i + j;
     }
 
@@ -103,16 +105,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
 
     @Override
     public Integer updateUser(Long id, UserInfoChangeReq userInfoChangeReq) {
+        System.out.println("userInfoChangeReq = " + userInfoChangeReq);
         SysUser sysUser = sysUserMapper.selectById(id);
-        System.out.println("sysUser"+sysUser);
-        System.out.println("userInfoChangeReq"+userInfoChangeReq);
-        System.out.println(sysUser.getPassword());
-        System.out.println(userInfoChangeReq.getPassword());
-        if ((userInfoChangeReq.getPassword()).equals(sysUser.getPassword())) {
-            throw new WanbangException(ResultCode.THESAMEPSWERROR);
-        }
-        if (!(userInfoChangeReq.getOldPassword()).equals(sysUser.getPassword())){
-            throw new WanbangException(ResultCode.FAIL);
+        String originPwd = sysUser.getPassword();
+        System.out.println("originPwd = " + originPwd);
+        String oldPwd4Check = SaSecureUtil.md5(userInfoChangeReq.getOldPassword());
+        System.out.println("oldPwd4Check = " + oldPwd4Check);
+        String newPwd = SaSecureUtil.md5(userInfoChangeReq.getPassword());
+        System.out.println("newPwd = " + newPwd);
+        if (userInfoChangeReq.getPassword() != null){
+            if (originPwd.equals(newPwd)) {
+                throw new WanbangException(ResultCode.THESAMEPSWERROR);
+            }
+            if (!originPwd.equals(oldPwd4Check)){
+                throw new WanbangException(ResultCode.FAIL);
+            }
         }
         SysUser newSysUser = new SysUser();
         newSysUser.setId(id);
