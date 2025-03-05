@@ -7,6 +7,7 @@ import com.wanbang.common.InventoryItem;
 import com.wanbang.common.Result;
 import com.wanbang.req.InventoryItemsChangeReq;
 import com.wanbang.resp.InventoryItemsResp;
+import com.wanbang.resp.ItemModelResp;
 import com.wanbang.service.InventoryItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -58,6 +59,16 @@ public class ItemsController {
         Integer i = inventoryItemService.deleteById(id);
         if (i > 0) {
             return Result.success();
+        }
+        return Result.fail();
+    }
+
+    @Operation(summary = "自动回填id和数量")
+    @GetMapping("/items/model/{modelNumber}")
+    public Result<ItemModelResp> getItemModel(@PathVariable("modelNumber") String modelNumber) {
+        ItemModelResp resp = inventoryItemService.getItemModel(modelNumber);
+        if (resp != null) {
+            return Result.success(resp);
         }
         return Result.fail();
     }

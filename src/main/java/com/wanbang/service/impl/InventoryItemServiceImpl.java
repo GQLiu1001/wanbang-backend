@@ -1,5 +1,6 @@
 package com.wanbang.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,6 +14,7 @@ import com.wanbang.req.InventoryLogChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
+import com.wanbang.resp.ItemModelResp;
 import com.wanbang.service.InventoryItemService;
 import com.wanbang.mapper.InventoryItemMapper;
 import com.wanbang.vo.UserInfoVO;
@@ -138,6 +140,18 @@ public class InventoryItemServiceImpl extends ServiceImpl<InventoryItemMapper, I
         int i = inventoryItemMapper.updateById(inventoryItem);
         System.out.println("售后每个item对库存修改= " + i);
         return i;
+    }
+
+    @Override
+    public ItemModelResp getItemModel(String modelNumber) {
+        LambdaQueryWrapper<InventoryItem> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(InventoryItem::getModelNumber, modelNumber);
+        InventoryItem inventoryItem = inventoryItemMapper.selectOne(wrapper);
+
+        ItemModelResp resp = new ItemModelResp();
+        BeanUtils.copyProperties(inventoryItem, resp);
+        resp.setItemId(inventoryItem.getId());
+        return resp;
     }
 
 

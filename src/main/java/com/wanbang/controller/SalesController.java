@@ -48,6 +48,7 @@ public class SalesController {
     @Operation(summary = "获取今日销售额")
     @GetMapping("/today-amount")
     public Result<TodaySaleAmountResp> getTodaySaleAmount() {
+        System.out.println("申请获取今日销售额");
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);

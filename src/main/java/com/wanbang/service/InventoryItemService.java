@@ -10,6 +10,7 @@ import com.wanbang.req.InventoryLogChangeReq;
 import com.wanbang.req.OrderItemPostReq;
 import com.wanbang.req.PostInboundReq;
 import com.wanbang.resp.InventoryItemsResp;
+import com.wanbang.resp.ItemModelResp;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -38,4 +39,6 @@ public interface InventoryItemService extends IService<InventoryItem> {
 
 
     Integer aftersale(ItemAftersaleChange item);
+
+    ItemModelResp getItemModel(String modelNumber);
 }
