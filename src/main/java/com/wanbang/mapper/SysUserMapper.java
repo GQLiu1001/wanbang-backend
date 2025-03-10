@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    LoginDTO login(String username, String password);
+    LoginDTO login(String username,String password);
 
 
     IPage<UserInfoVO> selectUserListWithRole(IPage<UserInfoVO> page);
