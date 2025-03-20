@@ -25,7 +25,7 @@ public class AuthController {
     @PostMapping("/login")
     public Result<LoginResp> login(@RequestBody LoginReq loginReq) {
         String username = loginReq.getUsername();
-        String password = loginReq.getPassword();
+        String password = SaSecureUtil.md5(loginReq.getPassword());
         LoginResp loginResp = sysUserService.login(username, password);
         if (loginResp == null) {
             return Result.fail();
@@ -38,9 +38,7 @@ public class AuthController {
     @PostMapping("/register")
     public Result register(@RequestBody RegisterReq registerReq) {
         String username = registerReq.getUsername();
-        System.out.println("password = " + registerReq.getPassword());
         String password = SaSecureUtil.md5(registerReq.getPassword());
-        System.out.println("password = " + password);
         String phone = registerReq.getPhone();
         Integer i = sysUserService.registry(username, password, phone);
         if (i > 0) {
@@ -54,9 +52,7 @@ public class AuthController {
     public Result resetPassword(@RequestBody ForgetPasswordReq forgetPasswordReq) {
         String username = forgetPasswordReq.getUsername();
         String phone = forgetPasswordReq.getPhone();
-        System.out.println("password = " + forgetPasswordReq.getNewPassword() );
         String password = SaSecureUtil.md5(forgetPasswordReq.getNewPassword());
-        System.out.println("password = " + password);
         Integer i = sysUserService.changePassword(username, phone, password);
         if (i > 0) {
             return Result.success();

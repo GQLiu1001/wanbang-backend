@@ -39,12 +39,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
 
     @Override
     public LoginResp login(String username, String password) {
-        System.out.println("username = " + username);
-        System.out.println("password = " + password);
-        password = SaSecureUtil.md5(password);
-        System.out.println("password = " + password);
         LoginDTO loginDTO = sysUserMapper.login(username,password);
-        System.out.println("loginDTO = " + loginDTO);
         Integer roleId = loginDTO.getRoleId();
         System.out.println("从数据库查出的loginDTO"+loginDTO);
         LoginResp loginResp = new LoginResp();

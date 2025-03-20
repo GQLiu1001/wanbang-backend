@@ -26,17 +26,16 @@
 
     </update>
     <select id="login" resultType="com.wanbang.dto.LoginDTO">
-        select sys_user.id ,
-               sys_user.username,
-               sys_user.phone,
-               sys_user.avatar,
-               sys_user.password,
-               sys_user_role.role_id
-        from sys_user
-        join sys_user_role
-        on sys_user.id = sys_user_role.user_id
-        where sys_user.username = #{username}
-        and sys_user.password = #{password}
+        select user.id ,
+               user.username,
+               user.phone,
+               user.avatar,
+               user_role.role_id
+        from sys_user user
+        join sys_user_role user_role
+        on user.id = user_role.user_id
+        where username = #{username}
+            and password = #{password}
     </select>
     <select id="selectUserListWithRole" resultType="com.wanbang.vo.UserInfoVO">
         SELECT
