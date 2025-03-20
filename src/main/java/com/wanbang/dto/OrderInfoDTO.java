@@ -25,6 +25,8 @@ public class OrderInfoDTO {
     private BigDecimal adjustedAmount;
     @JsonProperty("aftersale_status")
     private Integer aftersaleStatus;
+    @JsonProperty("dispatch_status")
+    private Integer dispatchStatus;
     @JsonProperty("order_create_time")
     private Date orderCreateTime;
     @JsonProperty("order_update_time")

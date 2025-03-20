@@ -211,5 +211,15 @@ public class OrderController {
         return Result.success();
     }
 
+    @Operation(summary = "更改订单派送状态")
+    @PutMapping("/{id}/dispatch_status")
+    public Result dispatchOrderStatus(@PathVariable("id") Long id) {
+
+        OrderInfo byId = orderInfoService.getById(id);
+        byId.setDispatchStatus(1);
+        System.out.println(byId);
+        orderInfoService.updateById(byId);
+        return Result.success();
+    }
 
 }
