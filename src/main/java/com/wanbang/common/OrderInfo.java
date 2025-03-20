@@ -63,6 +63,11 @@ public class OrderInfo {
      */
     @JsonProperty("aftersale_status")
     private Integer aftersaleStatus;
+    /**
+     * 派单状态
+     */
+    @JsonProperty("dispatch_status")
+    private Integer dispatchStatus;
 
     /**
      * 订单创建时间

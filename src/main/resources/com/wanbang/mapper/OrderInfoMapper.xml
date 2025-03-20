@@ -13,6 +13,7 @@
             <result property="totalAmount" column="total_amount" />
             <result property="adjustedAmount" column="adjusted_amount" />
             <result property="aftersaleStatus" column="aftersale_status" />
+            <result property="dispatchStatus" column="dispatch_status" />
             <result property="orderCreateTime" column="order_create_time" />
             <result property="orderUpdateTime" column="order_update_time" />
     </resultMap>

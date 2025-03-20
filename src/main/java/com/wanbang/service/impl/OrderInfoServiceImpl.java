@@ -104,6 +104,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setAdjustedAmount(orderPostReq.getTotalAmount());
         orderInfo.setTotalAmount(orderPostReq.getTotalAmount());
         orderInfo.setOrderNo("ORD" + IdWorker.getId());
+        orderInfo.setDispatchStatus(0);
         orderInfo.setOrderCreateTime(new Date());
         orderInfo.setOrderUpdateTime(new Date());
         int i = orderInfoMapper.insert(orderInfo);
